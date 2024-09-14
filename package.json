@@ -1,12 +1,5 @@
 {
-  "dependencies": {
-    "express": "^4.19.2",
-    "qrcode": "^1.5.4"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.4"
-  },
-  "name": "proyek-3",
+  "name": "tes-proyek-3",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -17,5 +10,12 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "express": "^4.20.0",
+    "jimp": "^1.6.0",
+    "nodemon": "^3.1.4",
+    "qrcode": "^1.5.4",
+    "qrcode-with-logos": "^1.1.1"
+  }
 }
