@@ -16,17 +16,11 @@ body {
 
 /* Aktivasi Layout Style */
 .sign-body-background {
-  background: #e0ffff;
-  background: -webkit-linear-gradient(
-    to right,
-    rgba(224, 255, 255, 1),
-    rgba(135, 206, 250, 1)
-  );
-  background: linear-gradient(
-    to right,
-    rgba(224, 255, 255, 1),
-    rgba(135, 206, 250, 1)
-  );
+  background: linear-gradient(to bottom right, #083ce7, #e15c15);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .sign-body-layout {
