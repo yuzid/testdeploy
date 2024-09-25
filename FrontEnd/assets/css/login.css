@@ -68,6 +68,31 @@ h2 {
   font-size: 14px;
 }
 
+/* Styling for the password input field with toggle icon */
+.password-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-container input {
+  flex-grow: 1;
+  padding-right: 40px;
+}
+
+.password-container #toggle-password {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+}
+
+/* Styling for the error messages */
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
 .forgot-password {
   text-align: right;
   margin-bottom: 15px;
