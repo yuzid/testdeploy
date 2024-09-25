@@ -17,12 +17,15 @@
     <script src="https://unpkg.com/feather-icons"></script>
 
     <!-- My Style -->
-    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/indexnew.css" />
   </head>
 
   <body>
     <!-- Sidebar Start -->
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
+      <div class="toggle-btn" id="toggle-btn">
+        <a href="#" id="toggle-icon"><i data-feather="chevron-left"></i></a>
+      </div>
       <div class="sidebar-icon">
         <a href="#"><i data-feather="plus-circle"></i></a>
       </div>
@@ -70,6 +73,20 @@
 
     <script>
       feather.replace();
+
+      const toggleBtn = document.getElementById("toggle-btn");
+      const sidebar = document.getElementById("sidebar");
+      const toggleIcon = document.getElementById("toggle-icon");
+
+      toggleBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("collapsed");
+
+        if (sidebar.classList.contains("collapsed")) {
+          toggleIcon.innerHTML = feather.icons["chevron-right"].toSvg();
+        } else {
+          toggleIcon.innerHTML = feather.icons["chevron-left"].toSvg();
+        }
+      });
     </script>
   </body>
 </html>
