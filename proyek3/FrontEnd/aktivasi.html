@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aktivasi Akun</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <link rel="stylesheet" href="assets/css/aktivasi.css" />
+    <!-- Ganti dengan stylesheet yang relevan jika diperlukan -->
+  </head>
+  <body class="sign-body-layout sign-body-background">
+    <div class="container">
+      <div class="sign-container">
+        <h2 class="h2">Aktivasi Akun</h2>
+        <form action="submit_aktivasi.php" method="POST" id="aktivasiForm">
+          <div class="sign-form-group">
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="sign-input"
+              required
+            />
+            <label for="email" class="sign-label">Email</label>
+          </div>
+          <div class="sign-form-group">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="sign-input"
+              required
+            />
+            <label for="password" class="sign-label">Password</label>
+            <span id="toggle-password" class="sign-show-password">
+              <i data-feather="eye" class="toggle-icon"></i>
+            </span>
+          </div>
+
+          <div class="sign-form-group">
+            <input
+              type="password"
+              id="confirm_password"
+              name="confirm_password"
+              class="sign-input"
+              required
+            />
+            <label for="confirm_password" class="sign-label"
+              >Konfirmasi Password</label
+            >
+            <span id="toggle-confirm-password" class="sign-show-password">
+              <i data-feather="eye" class="toggle-icon"></i>
+            </span>
+          </div>
+
+          <button type="submit" class="sign-button">Aktivasi</button>
+        </form>
+        <div class="sign-account-text">
+          <p>Sudah punya akun? <a href="login.html">Masuk</a></p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Initialize Feather Icons
+      feather.replace();
+
+      // Function to toggle password visibility
+      function togglePasswordVisibility(toggleElementId, passwordInputId) {
+        const toggleElement = document.getElementById(toggleElementId);
+        const passwordInput = document.getElementById(passwordInputId);
+
+        toggleElement.addEventListener("click", function () {
+          const type =
+            passwordInput.getAttribute("type") === "password"
+              ? "text"
+              : "password";
+          passwordInput.setAttribute("type", type);
+
+          // Toggle icon based on the password visibility
+          toggleElement.innerHTML =
+            type === "password"
+              ? '<i data-feather="eye"></i>'
+              : '<i data-feather="eye-off"></i>';
+
+          // Re-initialize Feather icons to render the updated icon
+          feather.replace();
+        });
+      }
+
+      // Call the function for both password and confirm password fields
+      togglePasswordVisibility("toggle-password", "password");
+      togglePasswordVisibility("toggle-confirm-password", "confirm_password");
+
+      document
+        .getElementById("aktivasiForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          const password = document.getElementById("password").value;
+          const confirmPassword =
+            document.getElementById("confirm_password").value;
+
+          if (password !== confirmPassword) {
+            alert(
+              "Password dan konfirmasi password tidak cocok. Silakan periksa kembali."
+            );
+          } else {
+            submitForm();
+          }
+        });
+
+      function submitForm() {
+        const form = document.getElementById("aktivasiForm");
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (data.success) {
+              window.location.href = "aktivasi-sukses.html";
+            } else {
+              alert(data.message || "Terjadi kesalahan. Silakan coba lagi.");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            window.location.href = "pageNotFound.html";
+          });
+      }
+
+      window.addEventListener(
+        "error",
+        function (e) {
+          if (e.target.tagName === "LINK" || e.target.tagName === "SCRIPT") {
+            window.location.href = "pageNotFound.html";
+          }
+        },
+        true
+      );
+    </script>
+  </body>
+</html>

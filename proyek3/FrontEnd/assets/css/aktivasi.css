@@ -1,0 +1,200 @@
+/* Global Style (Mengikuti Login) */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif; /* Gaya font mengikuti Login */
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f5f5;
+}
+
+/* Aktivasi Layout Style */
+.sign-body-background {
+  background: #e0ffff;
+  background: -webkit-linear-gradient(
+    to right,
+    rgba(224, 255, 255, 1),
+    rgba(135, 206, 250, 1)
+  );
+  background: linear-gradient(
+    to right,
+    rgba(224, 255, 255, 1),
+    rgba(135, 206, 250, 1)
+  );
+}
+
+.sign-body-layout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.sign-container {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  padding: 40px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 90%;
+  max-width: 500px;
+}
+
+/* Form Group (Gaya Aktivasi) */
+.sign-form-group {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.sign-label {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  transition: 0.2s ease all;
+  color: #999;
+}
+
+/* Input Field (Tetap dengan Placeholder dalam Input) */
+.sign-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+  transition: 0.2s ease all;
+  font-size: 1rem;
+}
+
+/* Fokus pada input, label naik ke atas (Aktivasi) */
+.sign-input:focus {
+  border-color: #0000ff; /* Warna border focus mengikuti Login */
+}
+
+.sign-input:focus + .sign-label,
+.sign-input:valid + .sign-label {
+  top: -12px; /* Sesuaikan dengan jarak yang diinginkan */
+  left: 0; /* Pindahkan label ke kiri */
+  font-size: 10px; /* Ukuran font label saat aktif */
+  color: #0000ff; /* Warna label naik sesuai Login */
+  transform: translateY(-50%); /* Menjaga label di tengah secara vertikal */
+}
+
+/* Icon Show Password (Mengikuti Login) */
+.sign-show-password {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #333; /* Warna icon mengikuti Login */
+  font-size: 1.1rem;
+}
+
+/* Button (Mengikuti Login) */
+.sign-button {
+  background-color: #0000ff;
+  color: #ffffff;
+  padding: 10px 0;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.sign-button:hover {
+  background-color: #3333ff; /* Hover button sesuai Login */
+}
+
+/* Additional Styles */
+.sign-account-text {
+  margin-top: 20px;
+  color: #777;
+}
+
+.sign-account-text a {
+  color: #0000ff; /* Link mengikuti Login */
+  text-decoration: none;
+}
+
+/* Style Khusus untuk Halaman Login */
+.container {
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.back-to-home {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.back-to-home a {
+  font-size: 16px;
+  text-decoration: none;
+  color: #0000ff;
+}
+
+.back-to-home img {
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.login-box {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.forgot-password {
+  text-align: right;
+  margin-bottom: 15px;
+}
+
+.forgot-password a {
+  text-decoration: none;
+  color: #0000ff;
+  font-size: 14px;
+}
+
+.login-button {
+  background-color: #0000ff;
+  color: #ffffff;
+  padding: 10px 0;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: #3333ff;
+}
+
+.activate-account {
+  margin-top: 20px;
+}
+
+.activate-account p {
+  font-size: 14px;
+}
+
+.activate-account a {
+  text-decoration: none;
+  color: #0000ff;
+  font-weight: bold;
+}
