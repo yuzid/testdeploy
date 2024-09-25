@@ -16,17 +16,11 @@ body {
 
 /* Aktivasi Layout Style */
 .sign-body-background {
-  background: #e0ffff;
-  background: -webkit-linear-gradient(
-    to right,
-    rgba(224, 255, 255, 1),
-    rgba(135, 206, 250, 1)
-  );
-  background: linear-gradient(
-    to right,
-    rgba(224, 255, 255, 1),
-    rgba(135, 206, 250, 1)
-  );
+  background: linear-gradient(to bottom right, #083ce7, #e15c15);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .sign-body-layout {
@@ -54,34 +48,35 @@ body {
 
 .sign-label {
   position: absolute;
-  top: 10px;
-  left: 15px;
-  transition: 0.2s ease all;
-  color: #999;
+  top: 10px; /* Posisi awal label */
+  left: 15px; /* Jarak dari sisi kiri */
+  transition: 0.2s ease all; /* Transisi untuk animasi */
+  color: #999; /* Warna label awal */
 }
 
 /* Input Field (Tetap dengan Placeholder dalam Input) */
 .sign-input {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  outline: none;
-  transition: 0.2s ease all;
-  font-size: 1rem;
+  width: 100%; /* Lebar input */
+  padding: 12px; /* Padding untuk input */
+  border: 1px solid #ddd; /* Warna border */
+  border-radius: 5px; /* Sudut border yang melengkung */
+  outline: none; /* Hilangkan outline saat fokus */
+  transition: 0.2s ease all; /* Transisi untuk animasi */
+  font-size: 1rem; /* Ukuran font input */
 }
 
-/* Fokus pada input, label naik ke atas (Aktivasi) */
+/* Fokus pada input, border berubah warna */
 .sign-input:focus {
   border-color: #0000ff; /* Warna border focus mengikuti Login */
 }
 
+/* Ketika input fokus atau valid, label bergerak ke atas dan disesuaikan */
 .sign-input:focus + .sign-label,
-.sign-input:valid + .sign-label {
-  top: -12px; /* Sesuaikan dengan jarak yang diinginkan */
+.sign-input:not(:placeholder-shown) + .sign-label {
+  top: -12px; /* Posisi label saat aktif */
   left: 0; /* Pindahkan label ke kiri */
   font-size: 10px; /* Ukuran font label saat aktif */
-  color: #0000ff; /* Warna label naik sesuai Login */
+  color: #0000ff; /* Warna label aktif */
   transform: translateY(-50%); /* Menjaga label di tengah secara vertikal */
 }
 

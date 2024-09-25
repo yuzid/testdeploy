@@ -12,7 +12,6 @@
     <script src="https://unpkg.com/feather-icons"></script>
 
     <link rel="stylesheet" href="assets/css/aktivasi.css" />
-    <!-- Ganti dengan stylesheet yang relevan jika diperlukan -->
   </head>
   <body class="sign-body-layout sign-body-background">
     <div class="container">
@@ -26,9 +25,11 @@
               name="email"
               class="sign-input"
               required
+              placeholder=" "
             />
             <label for="email" class="sign-label">Email</label>
           </div>
+
           <div class="sign-form-group">
             <input
               type="password"
@@ -36,6 +37,7 @@
               name="password"
               class="sign-input"
               required
+              placeholder=" "
             />
             <label for="password" class="sign-label">Password</label>
             <span id="toggle-password" class="sign-show-password">
@@ -50,6 +52,7 @@
               name="confirm_password"
               class="sign-input"
               required
+              placeholder=" "
             />
             <label for="confirm_password" class="sign-label"
               >Konfirmasi Password</label
@@ -83,14 +86,12 @@
               : "password";
           passwordInput.setAttribute("type", type);
 
-          // Toggle icon based on the password visibility
           toggleElement.innerHTML =
             type === "password"
               ? '<i data-feather="eye"></i>'
               : '<i data-feather="eye-off"></i>';
 
-          // Re-initialize Feather icons to render the updated icon
-          feather.replace();
+          feather.replace(); // Re-initialize Feather icons
         });
       }
 
@@ -102,55 +103,32 @@
         .getElementById("aktivasiForm")
         .addEventListener("submit", function (event) {
           event.preventDefault();
+
+          const email = document.getElementById("email").value;
           const password = document.getElementById("password").value;
           const confirmPassword =
             document.getElementById("confirm_password").value;
+
+          const passwordPattern =
+            /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{8,}$/;
+
+          if (!passwordPattern.test(password)) {
+            alert(
+              "Password harus terdiri dari minimal 8 karakter, termasuk minimal 1 huruf besar, 1 angka, dan 1 simbol."
+            );
+            return;
+          }
 
           if (password !== confirmPassword) {
             alert(
               "Password dan konfirmasi password tidak cocok. Silakan periksa kembali."
             );
-          } else {
-            submitForm();
+            return;
           }
+
+          // Semua form valid dan sesuai ketentuan, arahkan ke halaman verifikasi
+          window.location.href = "verifikasi.html";
         });
-
-      function submitForm() {
-        const form = document.getElementById("aktivasiForm");
-        const formData = new FormData(form);
-
-        fetch(form.action, {
-          method: "POST",
-          body: formData,
-        })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Network response was not ok");
-            }
-            return response.json();
-          })
-          .then((data) => {
-            if (data.success) {
-              window.location.href = "aktivasi-sukses.html";
-            } else {
-              alert(data.message || "Terjadi kesalahan. Silakan coba lagi.");
-            }
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-            window.location.href = "pageNotFound.html";
-          });
-      }
-
-      window.addEventListener(
-        "error",
-        function (e) {
-          if (e.target.tagName === "LINK" || e.target.tagName === "SCRIPT") {
-            window.location.href = "pageNotFound.html";
-          }
-        },
-        true
-      );
     </script>
   </body>
 </html>
