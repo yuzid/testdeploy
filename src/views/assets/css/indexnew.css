@@ -1,0 +1,168 @@
+:root {
+  --primary: #2600ff;
+  --bg: #ffffff;
+  --secondary-color: #ff8000;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+  border: none;
+  text-decoration: none;
+}
+
+/* Global Styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  display: flex;
+  min-height: 100vh;
+  background-color: #f0f0f0;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transition: width 0.3s ease;
+}
+
+.sidebar.collapsed {
+  width: 80px;
+}
+
+/* Toggle Button */
+.toggle-btn {
+  position: absolute;
+  top: 20px;
+  right: -15px;
+  background-color: var(--primary);
+  color: white;
+  border-radius: 50%;
+  padding: 5px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.toggle-btn:hover {
+  transform: scale(1.1);
+}
+
+.toggle-btn a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+}
+
+.sidebar-icon {
+  margin-bottom: 2rem;
+}
+
+.sidebar a {
+  display: block;
+  color: #000;
+  padding: 1rem;
+  text-align: center;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+.sidebar a:hover {
+  background-color: #ffa733;
+}
+
+.sidebar .active {
+  background-color: var(--primary);
+  color: #ffffff;
+}
+
+/* Top Navbar */
+.top-navbar {
+  height: 60px;
+  background-color: #f5f5f5;
+  width: calc(100% - 250px); /* Adjust for sidebar width */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  position: fixed;
+  top: 0;
+  left: 250px;
+  transition: left 0.3s ease;
+}
+
+.sidebar.collapsed + .top-navbar {
+  left: 80px;
+}
+
+/* Content */
+.content {
+  margin-left: 250px; /* Adjust for sidebar width */
+  padding-top: 60px; /* Adjust for top navbar height */
+  flex: 1;
+  padding: 5rem;
+  background-color: var(--bg);
+  transition: margin-left 0.3s ease;
+}
+
+.sidebar.collapsed + .top-navbar + .content {
+  margin-left: 80px;
+}
+
+/* Dashboard Buttons */
+.dashboard-buttons {
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+}
+
+.button-card {
+  background-color: var(--secondary-color);
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+  width: 200px;
+  transition: transform 0.2s ease;
+}
+
+.button-card p {
+  color: white;
+  margin: 0.5rem 0;
+}
+
+.button-card .icon {
+  font-size: 2rem;
+}
+
+.button-card button {
+  background-color: #1a1aff;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button-card button:hover {
+  background-color: #0000ff;
+}
+
+.button-card:hover {
+  transform: scale(1.05);
+}

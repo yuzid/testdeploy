@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Dashboard</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <!-- My Style -->
+    <link rel="stylesheet" href="assets/css/login.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="back-to-home">
+        <a href="#"></a>
+      </div>
+      <div class="login-box">
+        <form id="login-form">
+          <h2>Log In</h2>
+          <div class="input-field">
+            <label for="email">Email address</label>
+            <input
+              type="email"
+              id="email"
+              placeholder="Enter your email"
+              required
+            />
+            <p class="error-message" id="email-error"></p>
+          </div>
+          <div class="input-field">
+            <label for="password">Password</label>
+            <div class="password-container">
+              <input
+                type="password"
+                id="password"
+                placeholder="Enter your password"
+                required
+                minlength="6"
+              />
+              <span id="toggle-password">
+                <i data-feather="eye"></i>
+              </span>
+            </div>
+            <p class="error-message" id="password-error"></p>
+          </div>
+          <div class="forgot-password">
+            <a href="#">Forgot Password?</a>
+          </div>
+          <button type="submit" class="login-button">Log In</button>
+          <div class="activate-account">
+            <p>Don't have an account? <a href="#">Activate</a></p>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // Initialize Feather Icons
+      feather.replace();
+
+      // Toggle password visibility
+      const togglePassword = document.getElementById("toggle-password");
+      const passwordInput = document.getElementById("password");
+
+      togglePassword.addEventListener("click", function () {
+        const type =
+          passwordInput.getAttribute("type") === "password"
+            ? "text"
+            : "password";
+        passwordInput.setAttribute("type", type);
+
+        // Toggle icon based on the password visibility
+        if (type === "password") {
+          togglePassword.innerHTML = '<i data-feather="eye"></i>';
+        } else {
+          togglePassword.innerHTML = '<i data-feather="eye-off"></i>';
+        }
+
+        // Re-initialize Feather icons to render the updated icon
+        feather.replace();
+      });
+
+      // Validation and form submission handling
+      document
+        .getElementById("login-form")
+        .addEventListener("submit", function (event) {
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+
+          document.getElementById("email-error").textContent = "";
+          document.getElementById("password-error").textContent = "";
+
+          let valid = true;
+
+          // Email validation
+          if (email === "") {
+            document.getElementById("email-error").textContent =
+              "Please fill out this field.";
+            valid = false;
+          } else if (!validateEmail(email)) {
+            document.getElementById("email-error").textContent =
+              "Please enter a valid email address or username.";
+            valid = false;
+          }
+
+          // Password validation
+          if (password === "") {
+            document.getElementById("password-error").textContent =
+              "Please fill out this field.";
+            valid = false;
+          } else if (password.length < 6) {
+            document.getElementById("password-error").textContent =
+              "Password must be at least 6 characters long.";
+            valid = false;
+          }
+
+          // If validation passes, redirect to index.html
+          if (valid) {
+            event.preventDefault(); // Prevent the form from submitting to the server
+            window.location.href = "index.html"; // Redirect to index.html
+          } else {
+            event.preventDefault(); // Prevent the form submission if validation fails
+          }
+        });
+
+      // Email validation helper function
+      function validateEmail(email) {
+        const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return re.test(email);
+      }
+    </script>
+  </body>
+</html>
