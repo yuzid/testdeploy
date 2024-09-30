@@ -8,13 +8,20 @@ const createSl = async (req,res) => {
     try{
         const {body} =  req;
         if (! await isCustomUnique(body.custom)){
-            res.status(404).send({
+            res.status(400).send({
                 msg: "custom sudah ada"
             });
         }
         else{
             const id = await uniqueRandomID();
-            await Shortlink.insert(id, body.destination, body.custom, body.email);
+            let custom;
+            if (body.custom.length === 0){
+                custom =  id;
+            }
+            else{
+                custom = body.custom; 
+            }
+            await Shortlink.insert(id, body.destination, custom, body.email);
             res.status(303).redirect(`http://localhost:8000/shortlink/res/${id}`);
         }
     }
@@ -28,6 +35,10 @@ const updateSl = async (req,res) => {
         const {body} = req;
         let result = await Shortlink.getBy('short_url', body.original_url);
         // result = await pool.query(`SELECT * FROM shortlinks WHERE short_url = $1`, [body.original_url]);
+
+        if (result.rows[0]['email'] != body.email){
+            res.status(401).send('Unathorized');
+        }
     
         if (result.rowCount === 0){
             res.status(400).send('No rows found');
@@ -54,6 +65,9 @@ const deleteSl = async (req, res) => {
         const {body} = req;
         const result = await Shortlink.getBy('short_url', body.short_url);
         // const result = await pool.query(`SELECT * FROM shortlinks WHERE short_url = $1`, [body.short_url]);
+        if (result.rows[0]['email'] != body.email){
+            res.status(401).send('Unathorized');
+        }
         await SlHistory.insertDeleted(result.rows[0]['id_shortlink'], result.rows[0]['short_url']);
         // await pool.query(`INSERT INTO shortlink_history VALUES ($1, $2, now()::timestamp, 'deleted')`, [result.rows[0]['id_shortlink'], result.rows[0]['short_url']]);
         await Shortlink.delete('short_url', body.short_url);
@@ -66,10 +80,38 @@ const deleteSl = async (req, res) => {
 }
 
 const createResult = async (req, res) => {
-    res.status(200).send({
-        msg : "Sukses!",
-        id : req.params.id
-    });
+    try{
+        res.status(200).send({
+            msg : "Sukses!",
+            id : req.params.id
+        });
+    }
+    catch (err){
+        res.status(500).send(err.message);
+    }
+}
+
+const getByID = async (req,res) => {
+    try{
+        const {body} = req;
+        const result = await Shortlink.getBy('id_shortlink', body.id_shortlink);
+        if (result.rowCount === 0){
+            res.status(404).send("Not-found")
+        }
+        else if (result.rows[0]['email'] != body.email){
+            res.status(401).send('Unathorized');
+        }
+        else{
+            res.status(200).send({
+                'id_shortlink' : result.rows[0]['id_shortlink'],
+                'long_url' : result.rows[0]['long_url'],
+                'short_url' : result.rows[0]['short_url']//add qr url for later
+            });
+        }
+    }
+    catch(err){
+        res.status(500).send(err.message);
+    }
 }
 
 async function isIDunique(id){
@@ -127,7 +169,12 @@ const secondRedirect = async (req,res) => {
 }
 
 const notFound = async (req, res) => {
-    res.status(404).sendFile(path.join(__dirname, 'src', 'views', 'pageNotFound.html'));
+    try{
+        res.status(404).sendFile(path.join(__dirname, 'src', 'views', 'pageNotFound.html'));
+    }
+    catch (err){
+        res.status(500).send(err.message);
+    }
 }
 
 
@@ -138,5 +185,6 @@ export default {
     createResult,
     firstRedirect,
     secondRedirect,
-    notFound
+    notFound,
+    getByID
 }

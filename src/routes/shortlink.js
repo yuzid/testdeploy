@@ -13,4 +13,7 @@ routerShortlink.route('/not-found')
 routerShortlink.route('/res/:id')
     .get(shortlinkController.createResult);
 
+routerShortlink.route('/get')
+    .get(shortlinkController.getByID)
+
 export default routerShortlink;
