@@ -3,13 +3,12 @@ import format from 'pg-format';
 
 const account = {};
 
-const requireAuthotp = (req, res, next) => {
-    if (req.session.email) {
-        return next();
-    } else {
-        return res.redirect('http://localhost:8000/send-otp');
+account.insert = async (email,hashedPassword,active) => {
+            return await pool.query(`INSERT INTO accounts VALUES ($1, $2, $3)`, [email,hashedPassword,active]);
     }
-};
 
+account.emails = async (email) =>{
+            return await pool.query(`SELECT password FROM accounts WHERE email = $1`, [email]);
+}
 
 export default account;

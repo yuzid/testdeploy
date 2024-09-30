@@ -1,4 +1,5 @@
 import express from "express";
+import session from "express-session";
 import shortlinkController from "./src/controllers/shortlinkController.js";
 import routerShortlink from './src/routes/shortlink.js';
 import accountController from "./src/controllers/accountController.js";
@@ -8,6 +9,14 @@ import { __dirname } from "./path.js";
 
 const PORT = 8000;
 const app = express();
+
+app.use(session({
+    secret: 'my-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false }
+}));
+
 
 app.use(express.json());
 
