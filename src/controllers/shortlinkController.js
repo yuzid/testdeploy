@@ -1,6 +1,8 @@
 import Shortlink from '../models/shortlinkModel.js';
 import SlHistory from '../models/shotlinkHistoryModel.js';
 import cryptoRandomString from 'crypto-random-string';
+import { __dirname } from '../../path.js'; 
+import path from 'path';
 
 const createSl = async (req,res) => {
     try{
@@ -125,7 +127,7 @@ const secondRedirect = async (req,res) => {
 }
 
 const notFound = async (req, res) => {
-    res.status(404).send('destination not found');
+    res.status(404).sendFile(path.join(__dirname, 'src', 'views', 'pageNotFound.html'));
 }
 
 

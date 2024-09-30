@@ -4,10 +4,8 @@ import routerShortlink from './src/routes/shortlink.js';
 import accountController from "./src/controllers/accountController.js";
 import routerAccount from "./src/routes/account.js";
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { __dirname } from "./path.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 const PORT = 8000;
 const app = express();
 
