@@ -23,3 +23,6 @@ const dropdown = document.getElementById("dropdown");
 userIcon.addEventListener("click", () => {
   dropdown.classList.toggle("active");
 });
+
+// Refresh feather icons to update chevron down
+feather.replace();

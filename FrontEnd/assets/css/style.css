@@ -29,7 +29,7 @@ body {
 .sidebar {
   width: 80px;
   height: 100vh;
-  background-color: #f5f5f5;
+  background-color: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -82,7 +82,7 @@ body {
 /* Top Navbar */
 .top-navbar {
   height: 60px;
-  background-color: #f5f5f5;
+  background-color: #ffffff;
   width: calc(100% - 80px); /* Adjust for sidebar width */
   display: flex;
   justify-content: space-between;
@@ -115,7 +115,16 @@ body {
   padding: 0.5rem;
   border-radius: 50%;
   cursor: pointer;
+  display: inline-block; /* Agar ikon di dalamnya sejajar */
+  align-items: center;
+  justify-content: center;
 }
+
+/* .chevron-down-icon {
+  font-size: 1.2rem;
+  margin-left: 8px;
+  cursor: pointer; 
+} */
 
 .dropdown {
   display: none;
@@ -152,7 +161,7 @@ body {
   padding-top: 60px; /* Adjust for top navbar height */
   flex: 1;
   padding: 5rem;
-  background-color: var(--bg);
+  background-color: #f5f5f5;
 }
 
 .sidebar.expanded + .content {
