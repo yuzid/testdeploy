@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shortlink Dashboard</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <!-- My Style -->
+    <link rel="stylesheet" href="assets/css/newShortlink.css" />
+    <script defer src="assets/js/newShortlink.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="tabs">
+        <button class="tab active" onclick="showCreate()">Create</button>
+        <button class="tab" onclick="showHistory()">History</button>
+      </div>
+
+      <div id="createTab" class="content">
+        <h2>Create</h2>
+        <p>Shorten your link here!</p>
+      </div>
+
+      <div id="historyTab" class="content hidden">
+        <div class="sort-container">
+          <button class="sort-button">Sort from Newest</button>
+        </div>
+
+        <div class="link-history">
+          <div class="link-card">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg"
+              alt="YouTube Logo"
+              class="logo"
+            />
+            <div class="link-info">
+              <a href="#" class="short-link">plb.sh/AbC123</a>
+              <p class="original-link">https://www.youtube.com</p>
+              <p class="date">14 July 2024</p>
+            </div>
+            <div class="actions">
+              <button class="action-button copy">Copy</button>
+              <button class="action-button share">Share</button>
+              <button class="action-button edit">Edit</button>
+              <button class="action-button delete">Delete</button>
+            </div>
+          </div>
+
+          <div class="link-card">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Google_Docs_icon_%282020%29.svg"
+              alt="Google Docs Logo"
+              class="logo"
+            />
+            <div class="link-info">
+              <a href="#" class="short-link">plb.sh/dEf456</a>
+              <p class="original-link">https://docs.google.com</p>
+              <p class="date">10 July 2024</p>
+            </div>
+            <div class="actions">
+              <button class="action-button copy">Copy</button>
+              <button class="action-button share">Share</button>
+              <button class="action-button edit">Edit</button>
+              <button class="action-button delete">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

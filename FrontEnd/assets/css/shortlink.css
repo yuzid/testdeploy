@@ -203,11 +203,16 @@ body {
   width: 50px;
   height: 50px;
   margin-right: 20px;
-  color: #ff0000; /* Red for YouTube */
+  color: #ff0000; /* Red for YouTube icon */
 }
 
 .history-item .link-details {
   flex-grow: 1;
+}
+
+.history-item .link-details p {
+  color: #666;
+  margin: 5px 0;
 }
 
 .actions button {
@@ -226,46 +231,6 @@ body {
   margin-right: 5px;
 }
 
-/* 
-/* Dashboard Buttons */
-.dashboard-buttons {
-  display: flex;
-  justify-content: space-around;
-  gap: 1rem;
-}
-
-.button-card {
-  background-color: var(--secondary-color);
-  border-radius: 10px;
-  padding: 1rem;
-  text-align: center;
-  width: 200px;
-  transition: transform 0.2s ease;
-}
-
-.button-card p {
-  color: white;
-  margin: 0.5rem 0;
-}
-
-.button-card .icon {
-  font-size: 2rem;
-}
-
-.button-card button {
-  background-color: #1a1aff;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.button-card button:hover {
-  background-color: #0000ff;
-}
-
-.button-card:hover {
-  transform: scale(1.05);
+.actions button:hover {
+  background-color: #357abd;
 }
