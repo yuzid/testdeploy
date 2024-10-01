@@ -57,7 +57,7 @@ const updateSl = async (req,res) => {
             res.status(200).send('edit berhasil'); 
         }
         else{
-            res.status(400).send('not unique');
+            res.status(409).send('not unique');
         }
     }
     catch(err){
@@ -105,7 +105,7 @@ const createResult = async (req, res) => {
 const getByID = async (req,res) => {
     try{
         const {body} = req;
-        const result = await Shortlink.getBy('id_shortlink', body.id_shortlink);
+        const result = await Shortlink.getBy('id_shortlink', req.params.id);
         if (result.rowCount === 0){
             res.status(404).send("Not-found");
             return;
