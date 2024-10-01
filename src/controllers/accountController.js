@@ -145,7 +145,7 @@ const login = async(req,res) =>{
 
             if (isPasswordCorrect) {
                 req.session.userId = email;
-                res.status(201).send({ msg: 'Behrasil Masuk' });
+                res.redirect('/')
             } else {
                 return res.status(401).send({ msg: 'Password salah!' });
             }
@@ -174,6 +174,10 @@ const getEmailFromSession = (req, res) => {
     }
 };
 
+const logon = async (req, res) => {
+    res.sendFile(path.join(__dirname, 'src', 'views', 'login.html'));
+};
+
 export default{
     sendVerificationEmail,
     kirim_otp,
@@ -182,5 +186,6 @@ export default{
     login,
     loginfe,
     veriffe,
-    getEmailFromSession
+    getEmailFromSession,
+    logon
 }

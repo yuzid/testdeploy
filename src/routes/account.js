@@ -16,7 +16,7 @@ routerAccount.route('/verify',)
 routerAccount.route('/vmail')
     .get(accountController.verif_viamail)
 
-routerAccount.route('/login')
+routerAccount.route('/linlogic')
     .post(accountController.login)
 
 routerAccount.route('/aktivasi')
@@ -27,5 +27,8 @@ routerAccount.route('/verifikasi')
 
 routerAccount.route('/get-email')
     .get(accountController.getEmailFromSession);
+
+routerAccount.route('/login')
+    .get(accountController.logon)
 
 export default routerAccount;
