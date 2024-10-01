@@ -31,4 +31,8 @@ routerAccount.route('/get-email')
 routerAccount.route('/login')
     .get(accountController.logon)
 
+routerAccount.route('/forgot-password')
+    .get(accountController.forgpass)
+    .post(accountController.lgcforgpass)
+
 export default routerAccount;

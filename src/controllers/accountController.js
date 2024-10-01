@@ -12,6 +12,7 @@ dotenv.config();
 
 let otpStorage = {};
 let verificationTokenStorage = {};
+let otpstorage2 = {};
 
 
 const transporter = nodemailer.createTransport({
@@ -39,6 +40,44 @@ const sendVerificationEmail = (email, otp, verificationToken) => {
 
     return transporter.sendMail(mailOptions);
 };
+
+const sendotpreset = (email, otp) => {
+    const mailOptions = {
+        from: {
+            name: "Authenticator",
+            address: process.env.USER
+        },
+        to: email,
+        subject: 'Reset Password Akun Polbaners',
+        text: `Kode OTP mu adalah ${otp}, akan kadaluwarsa dalam 5 menit.`
+    };
+
+    return transporter.sendMail(mailOptions);
+};
+const lgcforgpass = async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        // Generate OTP
+        const otp = cryptoRandomString({ length: 6, type: 'numeric' });
+
+        // Store OTP with expiry time
+        otpstorage2[email] = { otp, expiresAt: Date.now() + 5 * 60 * 1000 };
+
+        // Send OTP reset email
+        await sendotpreset(email, otp);
+
+        // Set session data if needed
+        req.session.email = email;
+
+        res.status(200).json({ success: true, message: 'OTP sent to your email.' });
+    } catch (error) {
+        // Handle errors
+        console.error('Error sending OTP:', error); // Log the error
+        res.status(500).json({ success: false, message: 'Error sending OTP: ' + error.message });
+    }
+};
+
 
 const kirim_otp = async (req, res) => {
     try {
@@ -119,7 +158,7 @@ const verif_viamail = async(req,res) =>{
                 await account.insert(email, hashedPassword, "inactive");
                 delete otpStorage[email];
                 delete verificationTokenStorage[email];
-                return res.status(200).send({ msg: 'Akun berhasil diaktivasi menggunakan link verifikasi' });
+                return res.redirect('/')
             } else if (Date.now() >= expiresAt) {
                 return res.status(400).send({ msg: 'Link verifikasi kadaluwarsa' });
             } else {
@@ -178,6 +217,13 @@ const logon = async (req, res) => {
     res.sendFile(path.join(__dirname, 'src', 'views', 'login.html'));
 };
 
+const forgpass = async (req, res) => {
+    res.sendFile(path.join(__dirname, 'src', 'views', 'forgotpassword.html'));
+};
+
+
+
+
 export default{
     sendVerificationEmail,
     kirim_otp,
@@ -187,5 +233,7 @@ export default{
     loginfe,
     veriffe,
     getEmailFromSession,
-    logon
+    logon,
+    forgpass,
+    lgcforgpass
 }
