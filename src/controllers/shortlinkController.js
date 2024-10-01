@@ -11,6 +11,7 @@ const createSl = async (req,res) => {
             res.status(400).send({
                 msg: "custom sudah ada"
             });
+            return;
         }
         else{
             const id = await uniqueRandomID();
@@ -36,13 +37,17 @@ const updateSl = async (req,res) => {
         let result = await Shortlink.getBy('short_url', body.original_url);
         // result = await pool.query(`SELECT * FROM shortlinks WHERE short_url = $1`, [body.original_url]);
 
+        if (result.rowCount === 0){
+            res.status(404).send('No rows found');
+            return;
+        }
+
         if (result.rows[0]['email'] != body.email){
             res.status(401).send('Unathorized');
+            return;
         }
     
-        if (result.rowCount === 0){
-            res.status(400).send('No rows found');
-        }
+
     
         if (isCustomUnique(result.rows[0]['short_url'])){
             await SlHistory.insert(result.rows[0]['id_shortlink'], result.rows[0]['short_url']);
@@ -65,8 +70,14 @@ const deleteSl = async (req, res) => {
         const {body} = req;
         const result = await Shortlink.getBy('short_url', body.short_url);
         // const result = await pool.query(`SELECT * FROM shortlinks WHERE short_url = $1`, [body.short_url]);
+        if (result.rowCount === 0){
+            res.status(404).send('No rows found');
+            return;
+        }
+
         if (result.rows[0]['email'] != body.email){
             res.status(401).send('Unathorized');
+            return;
         }
         await SlHistory.insertDeleted(result.rows[0]['id_shortlink'], result.rows[0]['short_url']);
         // await pool.query(`INSERT INTO shortlink_history VALUES ($1, $2, now()::timestamp, 'deleted')`, [result.rows[0]['id_shortlink'], result.rows[0]['short_url']]);
@@ -96,10 +107,12 @@ const getByID = async (req,res) => {
         const {body} = req;
         const result = await Shortlink.getBy('id_shortlink', body.id_shortlink);
         if (result.rowCount === 0){
-            res.status(404).send("Not-found")
+            res.status(404).send("Not-found");
+            return;
         }
         else if (result.rows[0]['email'] != body.email){
             res.status(401).send('Unathorized');
+            return;
         }
         else{
             res.status(200).send({
