@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>URL Shortener</title>
+    <link rel="stylesheet" href="assets/css/newShortlink.css" />
+  </head>
+  <body>
+    <div class="sidebar">
+      <div class="sidebar-icon">+</div>
+      <div class="sidebar-icon home-icon">🏠</div>
+      <div class="sidebar-icon link-icon">🔗</div>
+      <div class="sidebar-icon qr-icon">🔳</div>
+      <div class="sidebar-icon up-icon">⬆️</div>
+    </div>
+
+    <div class="main-content">
+      <div class="header">
+        <h1>URL Shortener</h1>
+        <div class="profile-icon">🐶</div>
+      </div>
+      <div class="create-section">
+        <div class="tabs">
+          <div class="tab active">Create</div>
+          <div class="tab">History</div>
+        </div>
+        <div class="form-section">
+          <h2>Create short URL</h2>
+          <input
+            type="text"
+            id="url-input"
+            placeholder="Place your URL here..."
+          />
+          <button id="generate-btn">Generate URL</button>
+
+          <!-- Preview Section -->
+          <div id="preview-section" class="hidden">
+            <div class="preview-left">
+              <p>
+                <strong>Short URL</strong><br />
+                <span id="short-url">plb.sh/he12gdnr</span>
+                <a href="#" id="edit-backhalf">edit back-half</a>
+              </p>
+              <p>
+                <strong>Destination URL</strong><br />
+                <span id="destination-url">https://www.polban.ac.id/</span>
+                <a href="#" id="redirect-url">redirect</a>
+              </p>
+              <button id="save-link-btn">Save Your Link</button>
+            </div>
+            <div class="preview-right">
+              <label for="qr-toggle">Enable QR Code</label>
+              <input type="checkbox" id="qr-toggle" />
+              <div class="qr-preview" id="qr-preview"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="assets/js/shortlinkModel.js"></script>
+    <script src=""></script>
+  </body>
+</html>
