@@ -9,14 +9,14 @@ const createSl = async (req,res) => {
         const {body} =  req;
         if (! await isCustomUnique(body.custom)){
             res.status(400).send({
-                msg: "custom sudah ada"
+                msg :'custom sudah ada'
             });
             return;
         }
         else{
             const id = await uniqueRandomID();
             let custom;
-            if (body.custom.length === 0){
+            if (toString(body.custom).length === 0){
                 custom =  id;
             }
             else{
@@ -92,10 +92,7 @@ const deleteSl = async (req, res) => {
 
 const createResult = async (req, res) => {
     try{
-        res.status(200).send({
-            msg : "Sukses!",
-            id : req.params.id
-        });
+        res.status(200).sendFile(path.join(__dirname, 'src', 'views', 'shortlink.html'));//placeholder for results page
     }
     catch (err){
         res.status(500).send(err.message);
@@ -190,6 +187,14 @@ const notFound = async (req, res) => {
     }
 }
 
+const shortlinkMenu = async (req,res) => {
+    try{
+        res.status(200).sendFile(path.join(__dirname, 'src', 'views', 'shortlink.html'));
+    }
+    catch (err){    
+        res.status(500).send(err.message);
+    }
+}
 
 export default {
     createSl,
@@ -199,5 +204,6 @@ export default {
     firstRedirect,
     secondRedirect,
     notFound,
-    getByID
+    getByID,
+    shortlinkMenu
 }

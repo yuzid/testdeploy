@@ -1,6 +1,9 @@
 import express from "express";
 const routerShortlink = express.Router();
-import shortlinkController from '../controllers/shortlinkController.js'; 
+import shortlinkController from '../controllers/shortlinkController.js';
+
+routerShortlink.route('/')
+    .get(shortlinkController.shortlinkMenu)
 
 routerShortlink.route('/config')
     .post(shortlinkController.createSl)

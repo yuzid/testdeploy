@@ -17,7 +17,7 @@
     <script src="https://unpkg.com/feather-icons"></script>
 
     <!-- My Style -->
-    <link rel="stylesheet" href="assets/css/shortlink.css" />
+    <link rel="stylesheet" href="/assets/css/shortlink.css" />
     <script defer src="assets/js/shortlink.js"></script>
   </head>
 
@@ -79,11 +79,57 @@
         </div>
 
         <div id="Create" class="tabcontent">
-          <h3>Create a Shortlink</h3>
-          <input type="text" placeholder="Enter URL" id="urlInput" />
-          <button class="btn-primary" onclick="generateShortlink()">
-            Generate
-          </button>
+          <div class="qrcode-container">
+            <h2>Create Short URL</h2>
+
+            <form
+              action="http://localhost:8000/shortlink/config"
+              method="POST"
+              id="short-url-form"
+            >
+              <div class="input-group">
+                <label for="title-input">Title (optional)</label>
+                <input
+                  type="text"
+                  id="title-input"
+                  name="title"
+                  placeholder="Enter the title for your Short URL..."
+                />
+              </div>
+              <div class="input-group">
+                <label for="url-input">Destination URL</label>
+                <input
+                  type="text"
+                  id="url-input"
+                  name="url"
+                  placeholder="Place your URL here..."
+                  required
+                />
+              </div>
+              <div class="input-group">
+                <label for="custom-url-input">Custom URL (optional)</label>
+                <input
+                  type="text"
+                  id="custom-url-input"
+                  name="customUrl"
+                  placeholder="Enter custom URL if needed..."
+                />
+              </div>
+              <button class="save-btn" id="generate-btn" type="submit">
+                <!-- Changed to type="submit" -->
+                Generate Short URL
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div class="preview" id="qr-preview" style="display: none">
+          <canvas id="qr-canvas" width="300" height="300"></canvas>
+          <div class="qr-buttons">
+            <ul id="cart-list"></ul>
+            <button class="save-btn" id="copy-btn">Copy QR Code</button>
+            <button class="save-btn" id="download-btn">Download QR Code</button>
+          </div>
         </div>
 
         <div id="History" class="tabcontent">
@@ -122,9 +168,47 @@
     <!-- Content End -->
 
     <!-- JavaScript -->
-    <script src="assets/js/main.js"></script>
+    <script src="/assets/js/shortlink.js"></script>
+    <script src="../models/shortlinkModel.js"></script>
     <script>
       feather.replace(); // Initialize Feather icons
     </script>
+    <script>
+      document.getElementById("short-url-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+    
+        const title = document.getElementById("title-input").value;
+        const url = document.getElementById("url-input").value;
+        const customUrl = document.getElementById("custom-url-input").value;
+    
+        const data = {
+          destination: url,
+          custom: customUrl,
+        };
+    
+        fetch("http://localhost:8000/shortlink/config", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+          .then((response) => {
+            if (response.redirected) {
+              window.location.href = response.url;
+            } else {
+              return response.json();
+            }
+          })
+          .then((data) => {
+            console.log("Success:", data);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      });
+    </script>
   </body>
 </html>
+
+<!-- http://localhost:8000/shortlink/config POST -->
