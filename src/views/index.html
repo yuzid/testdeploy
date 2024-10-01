@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>User Dashboard</title>
+    <title>Homepage</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -17,20 +17,29 @@
     <script src="https://unpkg.com/feather-icons"></script>
 
     <!-- My Style -->
-    <link rel="stylesheet" href="/assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
   </head>
 
   <body>
     <!-- Sidebar Start -->
     <div class="sidebar">
       <div class="sidebar-icon">
-        <a href="#"><i data-feather="plus-circle"></i></a>
+        <button id="sidebar-toggle">
+          <i data-feather="chevron-right"></i>
+        </button>
       </div>
       <div class="sidebar-menu">
-        <a href="#" class="sidebar-link active"><i data-feather="home"></i></a>
-        <a href="#"><i data-feather="link-2"></i></a>
-        <a href="#"><i data-feather="grid"></i></a>
-        <a href="#"><i data-feather="trending-up"></i></a>
+        <a href="#create" class="sidebar-link active"
+          ><i data-feather="plus"></i> <span>Create New</span></a
+        >
+        <a href="#home"><i data-feather="home"></i> <span>Home</span></a>
+        <a href="shortlink.html"
+          ><i data-feather="link-2"></i> <span>URL Shortener</span></a
+        >
+        <a href="#qrcode"><i data-feather="grid"></i> <span>QR Codes</span></a>
+        <a href="#linktree"
+          ><i data-feather="trending-up"></i> <span>Link Tree</span></a
+        >
       </div>
     </div>
     <!-- Sidebar End -->
@@ -40,8 +49,16 @@
       <div class="user-dashboard">
         <p>User Dashboard</p>
       </div>
-      <div class="user-icon">
-        <i data-feather="smile"></i>
+      <div class="user-profile">
+        <div class="user-icon" id="user-icon">
+          <i data-feather="smile"></i>
+        </div>
+        <i class="chevron-down-icon" data-feather="chevron-down"></i>
+      </div>
+        <div class="dropdown" id="dropdown">
+          <!-- <p>Support</p> -->
+          <a href="login.html">Logout</a>
+        </div>
       </div>
     </nav>
     <!-- Navbar End -->
@@ -68,8 +85,10 @@
     </div>
     <!-- Content End -->
 
+    <!-- JavaScript -->
+    <script src="assets/js/main.js"></script>
     <script>
-      feather.replace();
+      feather.replace(); // Untuk mengganti ikon Feather.js
     </script>
   </body>
 </html>
