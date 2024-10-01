@@ -23,6 +23,9 @@ routerAccount.route('/aktivasi')
     .get(accountController.loginfe)
 
 routerAccount.route('/verifikasi')
-    .get(accountController.veriffe)
+    .get(requireAuthotp,accountController.veriffe)
+
+routerAccount.route('/get-email')
+    .get(accountController.getEmailFromSession);
 
 export default routerAccount;

@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import crypto from 'crypto';
 import path from 'path';
 import { __dirname } from '../../path.js';
+import { get } from 'https';
 
 dotenv.config();
 
@@ -165,6 +166,14 @@ const veriffe = async (req, res) => {
     res.sendFile(path.join(__dirname, 'src', 'views', 'verifikasi.html'));
 };
 
+const getEmailFromSession = (req, res) => {
+    if (req.session.email) {
+        return res.json({ email: req.session.email });
+    } else {
+        return res.status(404).json({ message: 'Email not found in session' });
+    }
+};
+
 export default{
     sendVerificationEmail,
     kirim_otp,
@@ -172,5 +181,6 @@ export default{
     verif_viamail,
     login,
     loginfe,
-    veriffe
+    veriffe,
+    getEmailFromSession
 }
