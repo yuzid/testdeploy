@@ -1,0 +1,261 @@
+/* Container untuk QR Code */
+.qrcode-container {
+  max-width: 800px;
+  margin: 60px auto;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+  font-family: "Inter", sans-serif;
+}
+
+.qrcode-container h2 {
+  color: #4361ee;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.input-group {
+  margin-top: 15px;
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+/* Layout QR Code bagian bawah */
+.qrcode-bottom {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.qr-bottom-left,
+.qr-bottom-right {
+  flex: 1;
+  padding: 10px;
+}
+
+.qr-bottom-left {
+  text-align: left;
+}
+
+.qr-bottom-right {
+  text-align: right;
+}
+
+/* Styling untuk Preview */
+.preview {
+  text-align: center;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.qr-buttons {
+  margin-top: 20px;
+}
+
+/* Tombol-tombol Save, Copy, Download */
+.save-btn {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 5px;
+}
+
+.save-btn:hover {
+  background-color: #45a049;
+}
+
+.save-btn:active {
+  transform: scale(0.95);
+  background-color: #3e8e41;
+}
+
+/* Options Styling */
+.options {
+  margin-top: 20px;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.option-group h4 {
+  margin-top: 5px;
+  color: #4361ee;
+}
+
+.style-options,
+.color-options,
+.logo-options {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.style-option,
+.color-option {
+  width: 70px;
+  height: 40px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.style-option:hover,
+.color-option:hover {
+  border-color: #4361ee;
+}
+
+.color-option {
+  border-radius: 50%;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background-color: #333;
+  padding: 20px;
+  color: white;
+  position: fixed;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.sidebar-menu a {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.sidebar-link.active {
+  background-color: #555;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.top-navbar {
+  background-color: #4361ee;
+  color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-dashboard {
+  font-size: 18px;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+}
+
+.user-profile .user-icon {
+  background-color: #f1f1f1;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  background-color: white;
+  right: 10px;
+  top: 50px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#user-icon:hover + .dropdown {
+  display: block;
+}
+
+/* Tab Content */
+.tabs {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.tablinks {
+  background-color: #e7e7e7;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.tablinks.active {
+  background-color: #4361ee;
+  color: white;
+}
+
+.tabcontent {
+  display: none;
+}
+
+.tabcontent.active {
+  display: block;
+}
+
+/* History */
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.history-item .link-details {
+  flex: 1;
+  margin-left: 10px;
+}
+
+.history-item a {
+  font-weight: bold;
+  color: #3498db;
+  text-decoration: none;
+}
+
+.history-item .actions button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  color: #4361ee;
+}
