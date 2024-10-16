@@ -32,4 +32,11 @@ Shortlink.exists = async (field, value) => {
     return await pool.query(sql, [value]);
 }
 
+Shortlink.getByEmailPaginated = async (email, limit, offset) => {
+    return await pool.query(
+        `SELECT * FROM shortlinks WHERE email = $1 ORDER BY time_shortlink_created DESC LIMIT $2 OFFSET $3`,
+        [email, limit, offset]
+    );
+};
+
 export default Shortlink;

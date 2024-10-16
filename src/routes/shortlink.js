@@ -19,4 +19,7 @@ routerShortlink.route('/res/:id')
 routerShortlink.route('/get/:id')
     .get(shortlinkController.getByID);
 
+routerShortlink.route('/email/:email')
+    .get(shortlinkController.getShortlinksPaginated);
+
 export default routerShortlink;
