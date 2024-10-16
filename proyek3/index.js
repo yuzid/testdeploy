@@ -8,7 +8,7 @@ app.get("/", (req, res) => {
     res.send("Welcome!");
 });
 
-app.use("/api/v1/a", aRoutes);
+app.use("/", aRoutes);
 
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
