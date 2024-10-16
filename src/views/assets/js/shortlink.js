@@ -105,7 +105,6 @@ function generateQRCode() {
           <p><strong>Destination URL:</strong> <a href="${urlValue}" target="_blank">${urlValue}</a></p>
           <p><strong>Title:</strong> ${titleValue}</p>
         </div>
-        <img src="${qrCodeDataUrl}" alt="QR Code" />
       `;
 
       cartList.appendChild(cartItem);
