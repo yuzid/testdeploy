@@ -3,7 +3,7 @@ const routerShortlink = express.Router();
 import shortlinkController from '../controllers/shortlinkController.js';
 
 routerShortlink.route('/')
-    .get(shortlinkController.shortlinkMenu)
+    .get(shortlinkController.shortlinkMenu);
 
 routerShortlink.route('/config')
     .post(shortlinkController.createSl)
@@ -17,6 +17,6 @@ routerShortlink.route('/res/:id')
     .get(shortlinkController.createResult);
 
 routerShortlink.route('/get/:id')
-    .get(shortlinkController.getByID)
+    .get(shortlinkController.getByID);
 
 export default routerShortlink;
