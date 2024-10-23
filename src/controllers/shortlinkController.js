@@ -216,6 +216,22 @@ const getShortlinksPaginated = async (req, res) => {
     }
 };
 
+export const shorten = async (url, email, custom = null) => {
+    if (custom === null){
+        const id = await uniqueRandomID();
+        custom = id;
+    }
+
+    if (await isCustomUnique(custom)){
+        const id = await uniqueRandomID();
+        await Shortlink.insert(id, url, custom, email);
+        return custom;
+    }
+    else{
+        return null;
+    }
+}
+
 export default {
     createSl,
     updateSl,

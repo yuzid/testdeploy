@@ -26,4 +26,9 @@ Linktree.delete = async (field, value) => {
     return await pool.query(sql, [value]);
 }
 
+Linktree.exists = async (field, value) => {
+    const sql = format(`SELECT EXISTS(SELECT 1 FROM linktrees WHERE %I = $1)`, field);
+    return await pool.query(sql, [value]);
+}
+
 export default Linktree
