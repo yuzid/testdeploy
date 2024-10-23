@@ -21,11 +21,11 @@ function generateShortlink() {
   alert("Shortlink generated for: " + url);
 }
 
-// Toggle sidebar
-document.getElementById("toggle-btn").addEventListener("click", function () {
-  const sidebar = document.getElementById("sidebar");
-  sidebar.classList.toggle("expanded");
-});
+// // Toggle sidebar
+// document.getElementById("toggle-btn").addEventListener("click", function () {
+//   const sidebar = document.getElementById("sidebar");
+//   sidebar.classList.toggle("expanded");
+// });
 
 // Handle form submission
 document
