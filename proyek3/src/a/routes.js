@@ -3,6 +3,6 @@ import { getShortlinksPaginated } from "./controller.js";
 
 const router = Router();
 
-router.get("/shortlinks/:email", getShortlinksPaginated);
+router.get("/:email", getShortlinksPaginated);
 
 export default router;
