@@ -124,24 +124,33 @@ function downloadQRCode() {
   }
 }
 
-function saveQRCode() {
+async function saveQRCode() {
   if (currentQRData) {
-    // Save to local storage or database
-    const historyItem = {
-      title: currentQRData.title,
-      url: currentQRData.url,
-      imageData: currentQRData.imageData,
-      date: new Date().toISOString(),
-    };
+    const imageData = currentQRData.imageData; // Make sure currentQRData is defined somewhere
+    const date = new Date().toISOString();
+    
+    try {
+      const response = await fetch('/qr/saveqr', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ imageData, date })
+      });
 
-    // Add to history (implementation depends on your storage method)
-    saveToHistory(historyItem);
-    alert("QR Code saved to history!");
-
-    // Reset form for new input
-    document.getElementById("qrForm").reset();
-    document.getElementById("inputSection").style.display = "block";
-    document.getElementById("resultSection").style.display = "none";
+      if (response.ok) {
+        alert("QR berhasil disimpan ke database");
+        // Reset form and UI only after successful save
+        document.getElementById("qrForm").reset();
+        document.getElementById("inputSection").style.display = "block";
+        document.getElementById("resultSection").style.display = "none";
+      } else {
+        alert("Gagal menyimpan QR code");
+      }
+    } catch (error) {
+      console.error('Error saving QR code:', error);
+      alert("Terjadi kesalahan saat menyimpan QR code");
+    }
   }
 }
 
@@ -173,6 +182,33 @@ function deleteHistoryQR(button) {
   if (confirm("Are you sure you want to delete this QR code?")) {
     historyItem.remove();
     // Also remove from storage
+  }
+}
+
+async function displayQRCode1() {
+  try {
+    const response = await fetch('/qr/pick', {  // Adjust the endpoint as needed
+      method: 'GET'
+    });
+
+    const data = await response.json();
+    
+    if (data.success) {
+      console.log('QR code retrieved successfully');
+      
+      // Assuming the image is stored as base64
+      const qrImage = document.createElement('img');
+      qrImage.src = data.imageData;  // If it's base64, it should already include the data:image/... prefix
+      
+      // Display the image in a container
+      const container = document.getElementById('qrDisplayContainer');
+      container.innerHTML = '';  // Clear previous content
+      container.appendChild(qrImage);
+    } else {
+      console.error('Failed to retrieve QR code:', data.error);
+    }
+  } catch (error) {
+    console.error('Error fetching QR code:', error);
   }
 }
 

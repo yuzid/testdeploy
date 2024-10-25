@@ -13,5 +13,10 @@ routerQr.route('/generateQR')
 routerQr.route('/')
     .get(QrController.qrmain)
 
+routerQr.route('/saveqr')
+    .post(QrController.saveQR)
+
+routerQr.route('/show') 
+    .get(QrController.pickQR)
 
 export default routerQr;
