@@ -2,10 +2,8 @@ import express from "express";
 import session from "express-session";
 import shortlinkController from "./src/controllers/shortlinkController.js";
 import routerShortlink from './src/routes/shortlink.js';
-import accountController from "./src/controllers/accountController.js";
 import routerAccount from "./src/routes/account.js";
 import routerQr from "./src/routes/qrRoutes.js";
-import routerLinktree from "./src/routes/linktree.js";
 import path from 'path';
 import { __dirname } from "./path.js";
 
@@ -30,7 +28,6 @@ app.use('/account', routerAccount);
 
 app.use('/qr', routerQr);
 
-app.use('/linktree', routerLinktree);
 
 app.listen(PORT, () => {
     console.log(`Server utama running at port ${PORT}`);

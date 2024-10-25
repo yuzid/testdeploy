@@ -46,27 +46,33 @@
 
         // Function to handle OTP verification
         async function verifyOtp() {
-            const otpInputs = document.querySelectorAll('.code-inputs input');
-            const otp = Array.from(otpInputs).map(input => input.value).join('');
+    try {
+        const otpInputs = document.querySelectorAll('.code-inputs input');
+        const otp = Array.from(otpInputs).map(input => input.value).join('');
+        const email = document.getElementById('email-span').innerText;
 
-            const email = document.getElementById('email-span').innerText; // Get email from span
+        const response = await fetch('/account/verify', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, otp })
+        });
 
-            const response = await fetch('/account/verify', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, otp })
-            });
-
-            const result = await response.json();
-            if (response.ok) {
-                alert('Account successfully verified!');
-                // Redirect or take other actions as needed
-            } else {
-                alert(result.msg || 'Verification failed.');
-            }
+        const result = await response.json();
+        
+        if (response.ok && result.success) {
+            alert('Account successfully verified!');
+            // Redirect menggunakan window.location
+            window.location.href = result.redirectUrl;
+        } else {
+            alert(result.msg || 'Verification failed.');
         }
+    } catch (error) {
+        alert('An error occurred during verification.');
+        console.error(error);
+    }
+}
     </script>
 </body>
 </html>

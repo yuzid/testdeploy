@@ -24,7 +24,7 @@ document
     const formData = new FormData(this);
 
     try {
-      const response = await fetch("/generate-qr", {
+      const response = await fetch("/qr/generateQR", {
         method: "POST",
         body: formData,
       });
@@ -83,7 +83,7 @@ async function updateQRStyle(color = null, element = null, logoInput = null) {
   }
 
   try {
-    const response = await fetch("/generate-qr", {
+    const response = await fetch("/qr/generateQR", {
       method: "POST",
       body: formData,
     });
