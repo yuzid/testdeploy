@@ -107,43 +107,40 @@ const kirim_otp = async (req, res) => {
     }
   };
   
-
-const verifikasi = async (req, res) => {
+  const verifikasi = async (req, res) => {
     try {
         const { email, otp } = req.body;
 
         if (!otpStorage[email]) {
-            return res.status(400).send({ msg: 'OTP belum dibuat untuk email ini' });
+            return res.status(400).json({ msg: 'OTP belum dibuat untuk email ini' });
         }
 
         const { otp: storedOtp, expiresAt, hashedPassword } = otpStorage[email];
 
-        // Check if OTP length matches before using timingSafeEqual to avoid errors
         if (otp.length !== storedOtp.length) {
-            return res.status(400).send({ msg: 'OTP salah' });
+            return res.status(400).json({ msg: 'OTP salah' });
         }
 
-        // Secure OTP comparison
         const isOtpValid = crypto.timingSafeEqual(Buffer.from(otp), Buffer.from(storedOtp));
 
-        // Validate OTP and check expiry time
         if (isOtpValid && Date.now() < expiresAt) {
-            // Insert user into the database (account insertion here)
             await account.insert(email, hashedPassword, "inactive");
-
-            // Cleanup after successful verification
             delete otpStorage[email];
             delete verificationTokenStorage[email];
-
-            return res.status(200).send({ msg: 'Akun berhasil diaktivasi menggunakan OTP' });
+            
+            // Kirim success response dengan URL redirect
+            return res.status(200).json({ 
+                success: true, 
+                redirectUrl: '/'
+            });
         } else if (Date.now() >= expiresAt) {
-            return res.status(400).send({ msg: 'OTP kadaluwarsa' });
+            return res.status(400).json({ msg: 'OTP kadaluwarsa' });
         } else {
-            return res.status(400).send({ msg: 'OTP salah' });
+            return res.status(400).json({ msg: 'OTP salah' });
         }
 
     } catch (err) {
-        res.status(500).send('Terjadi kesalahan server: ' + err.message);
+        res.status(500).json({ msg: 'Terjadi kesalahan server: ' + err.message });
     }
 };
 
