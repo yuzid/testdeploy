@@ -7,6 +7,7 @@ import routerQr from "./src/routes/qrRoutes.js";
 import path from 'path';
 import { __dirname } from "./path.js";
 import { checkAuth } from "./src/middleware/checkAuth.js";
+import routerLinktree from "./src/routes/linktree.js";
 
 const PORT = 8000;
 const app = express();
@@ -29,6 +30,8 @@ app.use('/assets', express.static(path.join(__dirname, 'src', 'views', 'assets')
 app.use('/account', routerAccount);
 
 app.use('/qr', routerQr);
+
+app.use('/linktree', routerLinktree);
 
 
 app.listen(PORT, () => {

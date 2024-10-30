@@ -225,12 +225,14 @@ export const shorten = async (url, email, custom = null) => {
     if (custom === null){
         const id = await uniqueRandomID();
         custom = id;
+        await Shortlink.insert(id, url, custom, email);
+        return id;
     }
 
     if (await isCustomUnique(custom)){
         const id = await uniqueRandomID();
         await Shortlink.insert(id, url, custom, email);
-        return custom;
+        return id;
     }
     else{
         return null;
