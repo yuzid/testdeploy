@@ -103,7 +103,7 @@ function generateQRCode() {
         <div>
           <p><strong>Short URL:</strong> <a href="${shortUrl}" target="_blank">${shortUrl}</a></p>
           <p><strong>Destination URL:</strong> <a href="${urlValue}" target="_blank">${urlValue}</a></p>
-          <p><strong>Title:</strong> ${titleValue}</p>
+          <p><strong>Custom URL:</strong> <a href="${urlValue}" target="_blank">${urlValue}</a></p>
         </div>
       `;
 
@@ -121,9 +121,9 @@ function generateQRCode() {
   }
 }
 
-function generateShortUrl(url) {
-  // Ensure the generated short URL has the prefix 'plb.sh/'
-  return "https://plb.sh/" + Math.random().toString(36).substring(7);
+function generateShortUrl(userUrl) {
+  // Ensure the generated short URL has the prefix 'http://localhost:8000/' and includes the user-provided URL
+  return "http://localhost:8000/" + encodeURIComponent(userUrl);
 }
 
 function generateQRCodeFromUrl(url) {
@@ -133,10 +133,4 @@ function generateQRCodeFromUrl(url) {
     encodeURIComponent(url) +
     "&size=300x300"
   );
-}
-
-// Placeholder for copyImageToClipboard function
-function copyImageToClipboard(qrCodeDataUrl) {
-  // Implementation for copying the image to clipboard
-  alert("This feature is not implemented yet."); // Replace with actual implementation
 }

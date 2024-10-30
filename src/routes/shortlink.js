@@ -13,7 +13,7 @@ routerShortlink.route('/config')
 routerShortlink.route('/not-found')
     .get(shortlinkController.notFound);
 
-routerShortlink.route('/res/:id')
+routerShortlink.route('/res')
     .get(shortlinkController.createResult);
 
 routerShortlink.route('/get/:id')
