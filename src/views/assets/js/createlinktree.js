@@ -1,40 +1,39 @@
+// Function to open a tab
 function openTab(evt, tabName) {
-  let i, tabcontent, tablinks;
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
+  const tabcontent = document.getElementsByClassName("tabcontent");
+  const tablinks = document.getElementsByClassName("tablinks");
+
+  // Hide all tab content and remove active class
+  for (const content of tabcontent) {
+    content.style.display = "none";
   }
-  tablinks = document.getElementsByClassName("tablinks");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  for (const link of tablinks) {
+    link.classList.remove("active");
   }
+
+  // Show selected tab and add active class
   document.getElementById(tabName).style.display = "block";
-  evt.currentTarget.className += " active";
+  evt.currentTarget.classList.add("active");
 }
 
-// Set default tab to open
+// Set default tab to open on load
 document.getElementById("defaultOpen").click();
 
-// Function to generate a short link (for demonstration)
+// Function to generate a shortlink (stub for now)
 function generateShortlink() {
-  let url = document.getElementById("urlInput").value;
+  const url = document.getElementById("urlInput").value;
   alert("Shortlink generated for: " + url);
 }
 
-// Toggle sidebar
-document.getElementById("toggle-btn").addEventListener("click", function () {
-  const sidebar = document.getElementById("sidebar");
-  sidebar.classList.toggle("expanded");
-});
-
-// Handle form submission
+// Event listener for the short URL form submission
 document
   .getElementById("short-url-form")
   .addEventListener("submit", function (event) {
-    event.preventDefault(); // Prevent the default form submission
+    event.preventDefault();
     generateQRCode();
   });
 
+// Function to generate QR code
 function generateQRCode() {
   const urlInputElement = document.getElementById("url-input");
   const titleInputElement = document.getElementById("title-input");
@@ -45,89 +44,60 @@ function generateQRCode() {
   const titleValue = titleInputElement.value;
 
   if (urlValue && titleValue) {
-    // Save URL and Title
-    const qrData = urlValue; // URL for QR code
+    // Create QR code and update display
+    const qrData = urlValue;
+    updateDisplayFields(
+      titleInputElement,
+      titleValue,
+      urlInputElement,
+      urlValue
+    );
 
-    // Replace input fields with spans
-    const titleSpan = document.createElement("span");
-    titleSpan.textContent = titleValue;
-    titleInputElement.parentNode.replaceChild(titleSpan, titleInputElement);
-
-    const urlSpan = document.createElement("span");
-    urlSpan.textContent = urlValue;
-    urlInputElement.parentNode.replaceChild(urlSpan, urlInputElement);
-
-    // Hide the generate button and show the preview section
+    // Hide generate button and show QR preview
     document.getElementById("generate-btn").style.display = "none";
     document.getElementById("qr-preview").style.display = "block";
 
-    // Generate short URL
     const shortUrl = generateShortUrl(urlValue);
-
-    // Generate QR Code and display it on canvas
-    const qrCanvas = document.getElementById("qr-canvas");
-    const ctx = qrCanvas.getContext("2d");
-    const img = new Image();
-
-    // URL for QR code from API
     const qrCodeDataUrl = generateQRCodeFromUrl(qrData);
-    console.log("Generated QR Code URL: ", qrCodeDataUrl); // Debug URL
 
-    img.onload = function () {
-      ctx.clearRect(0, 0, qrCanvas.width, qrCanvas.height);
-      ctx.drawImage(img, 0, 0, qrCanvas.width, qrCanvas.height);
-
-      // Show download and copy buttons
-      downloadButton.style.display = "block";
-      copyButton.style.display = "block";
-
-      // Function to download the QR Code
-      downloadButton.onclick = function () {
-        const link = document.createElement("a");
-        link.href = qrCodeDataUrl;
-        link.download = "qrcode.png";
-        link.click();
-      };
-
-      // Function to copy QR Code to clipboard
-      copyButton.onclick = function () {
-        copyImageToClipboard(qrCodeDataUrl); // Implement this function if not done
-      };
-
-      // Display the short URL with the prefix "plb.sh/"
-      const cartList = document.getElementById("cart-list");
-      const cartItem = document.createElement("li");
-      cartItem.classList.add("cart-item");
-
-      cartItem.innerHTML = `
-          <div>
-            <p><strong>Short URL:</strong> <a href="${shortUrl}" target="_blank">${shortUrl}</a></p>
-            <p><strong>Destination URL:</strong> <a href="${urlValue}" target="_blank">${urlValue}</a></p>
-            <p><strong>Custom URL:</strong> <a href="${urlValue}" target="_blank">${urlValue}</a></p>
-          </div>
-        `;
-
-      cartList.appendChild(cartItem);
-    };
-
-    img.onerror = function () {
-      console.error("Failed to load image.");
-      alert("Failed to load QR code. Please try again.");
-    };
-
-    img.src = qrCodeDataUrl;
+    // Display QR code and setup buttons
+    displayQRCode(
+      qrCodeDataUrl,
+      downloadButton,
+      copyButton,
+      shortUrl,
+      urlValue
+    );
   } else {
     alert("Please enter both a valid Title and URL");
   }
 }
 
+// Function to update display fields
+function updateDisplayFields(
+  titleInputElement,
+  titleValue,
+  urlInputElement,
+  urlValue
+) {
+  titleInputElement.replaceWith(createDisplaySpan(titleValue));
+  urlInputElement.replaceWith(createDisplaySpan(urlValue));
+}
+
+// Function to create a span for displaying input content
+function createDisplaySpan(content) {
+  const span = document.createElement("span");
+  span.textContent = content;
+  return span;
+}
+
+// Function to generate a short URL
 function generateShortUrl(userUrl) {
-  // Ensure the generated short URL has the prefix 'http://localhost:8000/' and includes the user-provided URL
   return "http://localhost:8000/" + encodeURIComponent(userUrl);
 }
 
+// Function to generate QR code data URL
 function generateQRCodeFromUrl(url) {
-  // Generate the QR code URL using the provided URL
   return (
     "https://api.qrserver.com/v1/create-qr-code/?data=" +
     encodeURIComponent(url) +
@@ -135,8 +105,114 @@ function generateQRCodeFromUrl(url) {
   );
 }
 
-// Placeholder for copyImageToClipboard function
-function copyImageToClipboard(qrCodeDataUrl) {
-  // Implementation for copying the image to clipboard
-  alert("This feature is not implemented yet."); // Replace with actual implementation
+// Function to display the QR code on the canvas
+function displayQRCode(
+  qrCodeDataUrl,
+  downloadButton,
+  copyButton,
+  shortUrl,
+  urlValue
+) {
+  const qrCanvas = document.getElementById("qr-canvas");
+  const ctx = qrCanvas.getContext("2d");
+  const img = new Image();
+  img.onload = function () {
+    ctx.clearRect(0, 0, qrCanvas.width, qrCanvas.height);
+    ctx.drawImage(img, 0, 0, qrCanvas.width, qrCanvas.height);
+
+    // Show download and copy buttons with handlers
+    downloadButton.style.display = "block";
+    downloadButton.onclick = () => downloadQRCode(qrCodeDataUrl);
+    copyButton.style.display = "block";
+    copyButton.onclick = () => copyImageToClipboard(qrCodeDataUrl);
+
+    displayShortUrl(shortUrl, urlValue);
+  };
+  img.src = qrCodeDataUrl;
 }
+
+// Function to download the QR code
+function downloadQRCode(qrCodeDataUrl) {
+  const link = document.createElement("a");
+  link.href = qrCodeDataUrl;
+  link.download = "qrcode.png";
+  link.click();
+}
+
+// Function to display the short URL and destination URL
+function displayShortUrl(shortUrl, urlValue) {
+  const cartList = document.getElementById("cart-list");
+  const cartItem = document.createElement("li");
+  cartItem.classList.add("cart-item");
+
+  cartItem.innerHTML = `
+    <div>
+      <p><strong>Short URL:</strong> <a href="${shortUrl}" target="_blank">${shortUrl}</a></p>
+      <p><strong>Destination URL:</strong> <a href="${urlValue}" target="_blank">${urlValue}</a></p>
+    </div>
+  `;
+
+  cartList.appendChild(cartItem);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("linktree-form");
+  const addButton = document.getElementById("add-button");
+  const buttonsContainer = document.getElementById("buttons-container");
+
+  // Tambahkan fungsi untuk menambah input button baru
+  addButton.addEventListener("click", () => {
+    const buttonItem = document.createElement("div");
+    buttonItem.classList.add("button-item");
+    buttonItem.innerHTML = `
+      <input type="text" placeholder="Button Name" class="button-name" required />
+      <input type="url" placeholder="Button URL" class="button-url" required />
+    `;
+    buttonsContainer.appendChild(buttonItem);
+  });
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault(); // Mencegah form dari pengiriman default
+
+    const title = document.getElementById("linktree-title").value;
+    const customUrl = document.getElementById("linktree-custom-url").value;
+    const style = {
+      font: document.getElementById("linktree-font").value,
+      "bg-color": document.getElementById("linktree-bg-color").value,
+    };
+
+    // Ambil data button yang ditambahkan
+    const btnArray = Array.from(
+      buttonsContainer.getElementsByClassName("button-item")
+    ).map((item) => {
+      const name = item.querySelector(".button-name").value;
+      const url = item.querySelector(".button-url").value;
+      return { name, url };
+    });
+
+    const data = {
+      title,
+      customUrl,
+      style,
+      btnArray,
+    };
+
+    try {
+      const response = await fetch("http://localhost:8000/linktree/config", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        alert("Linktree created successfully! ID: " + result.linktreeId);
+      } else {
+        const error = await response.json();
+        alert("Error: " + error.message);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  });
+});

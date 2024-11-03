@@ -77,10 +77,6 @@ h2 {
   gap: 10px;
 }
 
-.qr-options {
-  margin-bottom: 10px;
-}
-
 .qr-code {
   width: 150px;
   height: 150px;
@@ -90,6 +86,8 @@ h2 {
 .buttons {
   display: flex;
   gap: 10px;
+  justify-content: center; /* Centers the buttons */
+  margin-top: 10px; /* Adds spacing above the button group */
 }
 
 button {
@@ -106,10 +104,24 @@ button:hover {
   background-color: #3a00cc;
 }
 
-.save-btn {
+#copy-short-url-btn {
   background-color: #28a745;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 4.5rem;
 }
 
-.save-btn:hover {
+#copy-short-url-btn:hover {
   background-color: #218838;
+}
+
+.left-section .buttons,
+.right-section .buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }

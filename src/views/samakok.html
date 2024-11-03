@@ -89,13 +89,16 @@
             >
               <div class="input-group">
                 <label for="title-input">Add Your Link</label>
-                <input
-                  type="text"
-                  id="title-input"
-                  name="title"
-                  placeholder="your page name..."
-                  required
-                />
+                <div class="custom-url-container">
+                  <span class="url-prefix">plb.sh/</span>
+                  <input
+                    type="text"
+                    id="url-input"
+                    name="url"
+                    placeholder="your page name..."
+                    class="custom-url-input"
+                  />
+                </div>
               </div>
               <button class="save-btn" id="add-link-btn" type="submit">
                 Add Link
@@ -188,8 +191,30 @@
           const customUrl = document.getElementById("custom-url-input").value;
 
           const data = {
-            destination: url,
-            custom: customUrl,
+            title: "title shorlink apa",
+            customUrl: "test",
+            style: {
+              font: "consolas",
+              "bg-color": "red",
+            },
+            btnArray: [
+              {
+                name: "nama button1",
+                url: "url button1",
+              },
+              {
+                name: "nama button1",
+                url: "url button1",
+              },
+              {
+                name: "nama button1",
+                url: "url button1",
+              },
+              {
+                name: "nama hehe",
+                url: "url button1",
+              },
+            ],
           };
 
           fetch("http://localhost:8000/linktree/config", {
@@ -207,7 +232,7 @@
               }
             })
             .then((data) => {
-              console.log("Success:", data);
+              console.log("Linktree created:", data);
             })
             .catch((error) => {
               console.error("Error:", error);

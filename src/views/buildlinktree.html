@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Link-In-Bio</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .preview-phone {
+        width: 280px;
+        height: 560px;
+        border: 12px solid #000;
+        border-radius: 30px;
+        overflow: hidden;
+        position: fixed;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      .theme-option {
+        width: 120px;
+        height: 160px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+
+      .theme-option:hover {
+        transform: scale(1.05);
+      }
+
+      .color-circle {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        cursor: pointer;
+        margin: 5px;
+      }
+
+      .font-option {
+        padding: 10px;
+        margin: 5px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .font-option:hover {
+        background-color: #f8f9fa;
+      }
+
+      .block-shape {
+        width: 200px;
+        height: 50px;
+        margin: 10px;
+        cursor: pointer;
+      }
+
+      .preview-link {
+        margin: 10px 0;
+        padding: 12px;
+        border-radius: 8px;
+        background: white;
+        text-decoration: none;
+        color: black;
+        display: block;
+        transition: transform 0.2s;
+      }
+
+      .preview-link:hover {
+        transform: scale(1.02);
+      }
+
+      .sidebar {
+        width: 60px;
+        background: #f8f9fa;
+        height: 100vh;
+        position: fixed;
+        left: 0;
+        top: 0;
+        padding-top: 20px;
+      }
+
+      .main-content {
+        margin-left: 60px;
+        padding: 20px;
+      }
+
+      .nav-pills .nav-link.active {
+        background-color: #0d6efd;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sidebar d-flex flex-column align-items-center">
+      <div class="mb-3">
+        <img src="/api/placeholder/40/40" alt="Logo" class="rounded-circle" />
+      </div>
+      <div class="nav flex-column">
+        <a href="#" class="nav-link mb-2" data-bs-toggle="tooltip" title="Home">
+          <i class="fas fa-home"></i>
+        </a>
+        <a
+          href="#"
+          class="nav-link mb-2"
+          data-bs-toggle="tooltip"
+          title="Links"
+        >
+          <i class="fas fa-link"></i>
+        </a>
+        <a
+          href="#"
+          class="nav-link mb-2"
+          data-bs-toggle="tooltip"
+          title="QR Code"
+        >
+          <i class="fas fa-qrcode"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-8">
+            <ul class="nav nav-pills mb-4">
+              <li class="nav-item">
+                <a class="nav-link active" href="#" onclick="showBuildPage()"
+                  >Build</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" onclick="showDesignPage()"
+                  >Design</a
+                >
+              </li>
+            </ul>
+
+            <!-- Build Page -->
+            <div id="buildPage">
+              <div class="d-flex justify-content-between mb-4">
+                <h4>My Links</h4>
+                <button class="btn btn-primary" onclick="showAddLinkModal()">
+                  Add Link
+                </button>
+              </div>
+
+              <div id="linksList">
+                <!-- Links will be added here -->
+              </div>
+            </div>
+
+            <!-- Design Page -->
+            <div id="designPage" style="display: none">
+              <div class="mb-4">
+                <h5>Profile</h5>
+                <div class="mb-3">
+                  <label>Profile Image</label>
+                  <div class="d-flex align-items-center">
+                    <img
+                      src="/api/placeholder/100/100"
+                      alt="Profile"
+                      class="rounded-circle me-3"
+                    />
+                    <button class="btn btn-outline-primary">
+                      Change Image
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <h5>Themes</h5>
+                <div class="d-flex flex-wrap">
+                  <div
+                    class="theme-option m-2"
+                    style="
+                      background: linear-gradient(to bottom, #4158d0, #c850c0);
+                    "
+                  ></div>
+                  <div
+                    class="theme-option m-2"
+                    style="
+                      background: linear-gradient(to bottom, #0093e9, #80d0c7);
+                    "
+                  ></div>
+                  <div
+                    class="theme-option m-2"
+                    style="
+                      background: linear-gradient(to bottom, #8ec5fc, #e0c3fc);
+                    "
+                  ></div>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <h5>Button Style</h5>
+                <div class="d-flex flex-wrap">
+                  <div class="block-shape border">Standard</div>
+                  <div class="block-shape border" style="border-radius: 25px">
+                    Rounded
+                  </div>
+                  <div class="block-shape border" style="border-radius: 0">
+                    Sharp
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <h5>Font</h5>
+                <div class="d-flex flex-wrap">
+                  <div class="font-option">Inter</div>
+                  <div class="font-option">Roboto</div>
+                  <div class="font-option">Poppins</div>
+                  <div class="font-option">Montserrat</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Preview Phone -->
+          <div class="col-md-4">
+            <div class="preview-phone">
+              <div
+                class="preview-content p-3"
+                style="
+                  height: 100%;
+                  background: linear-gradient(to bottom, #4158d0, #c850c0);
+                "
+              >
+                <div class="text-center mb-4">
+                  <img
+                    src="/api/placeholder/80/80"
+                    alt="Profile"
+                    class="rounded-circle mb-2"
+                  />
+                  <h5 class="text-white">@username</h5>
+                </div>
+                <div id="previewLinks">
+                  <!-- Preview links will be added here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Link Modal -->
+    <div class="modal fade" id="addLinkModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add New Link</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="addLinkForm">
+              <div class="mb-3">
+                <label class="form-label">Title</label>
+                <input type="text" class="form-control" required />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Description (optional)</label>
+                <input type="text" class="form-control" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Destination URL</label>
+                <input type="url" class="form-control" required />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Short Link</label>
+                <div class="input-group">
+                  <span class="input-group-text">bio.sh/</span>
+                  <input type="text" class="form-control" required />
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button type="button" class="btn btn-primary" onclick="saveLink()">
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <script>
+      feather.replace(); // Initialize Feather icons
+
+      function goBack() {
+        window.history.back();
+      }
+
+      // Fungsi untuk mengambil ID dari URL
+      function getIdFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get("id"); // Mengambil ID dari URL
+      }
+
+      // Fungsi untuk mengambil data shortlink dari backend
+      async function fetchShortlink() {
+        const id = getIdFromUrl();
+        if (!id) {
+          console.error("No ID found in URL"); // Menampilkan pesan jika ID tidak ditemukan
+          return;
+        }
+
+        try {
+          const response = await fetch(
+            `http://localhost:8000/linktree/get/${id}`
+          );
+          if (!response.ok) {
+            throw new Error("Network response was not ok"); // Menampilkan pesan jika terjadi kesalahan jaringan
+          }
+          const data = await response.json(); // Mengambil data JSON dari response
+          console.log("ok", data);
+          document.getElementById("shortlink-title").textContent =
+            "http://localhost:8000/" + data.short_url; // Menampilkan judul (custom URL)
+          document.getElementById("shortlink-url").textContent = data.long_url; // Menampilkan URL tujuan
+          // Generate QR code if enabled
+          if (document.getElementById("enable-qr").checked) {
+            generateQRCode(data.destination);
+          }
+        } catch (error) {
+          console.error("Error fetching shortlink:", error);
+        }
+      }
+
+      // Generate QR code based on the URL
+      function generateQRCode(url) {
+        const canvas = document.getElementById("qr-code-canvas");
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // Assuming you have a QR code generation function (e.g., qrcode.js)
+        QRCode.toCanvas(canvas, url, function (error) {
+          if (error) console.error(error);
+          console.log("QR code generated!");
+        });
+      }
+
+      // Ambil data shortlink saat halaman dimuat
+      window.onload = fetchShortlink; // Memanggil fungsi fetchShortlink saat halaman dimuat
+    </script>
+    <script>
+      // Initialize tooltips
+      var tooltipTriggerList = [].slice.call(
+        document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      );
+      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+
+      // Show/Hide pages
+      function showBuildPage() {
+        document.getElementById("buildPage").style.display = "block";
+        document.getElementById("designPage").style.display = "none";
+        document
+          .querySelector('a[onclick="showBuildPage()"]')
+          .classList.add("active");
+        document
+          .querySelector('a[onclick="showDesignPage()"]')
+          .classList.remove("active");
+      }
+
+      function showDesignPage() {
+        document.getElementById("buildPage").style.display = "none";
+        document.getElementById("designPage").style.display = "block";
+        document
+          .querySelector('a[onclick="showBuildPage()"]')
+          .classList.remove("active");
+        document
+          .querySelector('a[onclick="showDesignPage()"]')
+          .classList.add("active");
+      }
+
+      // Add Link Modal
+      function showAddLinkModal() {
+        new bootstrap.Modal(document.getElementById("addLinkModal")).show();
+      }
+
+      // Save Link
+      function saveLink() {
+        const form = document.getElementById("addLinkForm");
+        if (form.checkValidity()) {
+          // Add link to list and preview
+          const linksList = document.getElementById("linksList");
+          const previewLinks = document.getElementById("previewLinks");
+
+          // Add to links list
+          const linkItem = document.createElement("div");
+          linkItem.className = "card mb-3";
+          linkItem.innerHTML = `
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-0">${form.elements[0].value}</h6>
+                            <small class="text-muted">bio.sh/${form.elements[3].value}</small>
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary me-2">Edit</button>
+                            <button class="btn btn-sm btn-outline-danger">Delete</button>
+                        </div>
+                    </div>
+                `;
+          linksList.appendChild(linkItem);
+
+          // Add to preview
+          const previewLink = document.createElement("a");
+          previewLink.href = form.elements[2].value;
+          previewLink.className = "preview-link";
+          previewLink.innerHTML = form.elements[0].value;
+          previewLinks.appendChild(previewLink);
+
+          // Close modal
+          bootstrap.Modal.getInstance(
+            document.getElementById("addLinkModal")
+          ).hide();
+          form.reset();
+        }
+      }
+    </script>
+  </body>
+</html>

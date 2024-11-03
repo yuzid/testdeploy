@@ -98,13 +98,16 @@
               </div>
               <div class="input-group">
                 <label for="url-input">Custom URL (optional)</label>
-                <input
-                  type="text"
-                  id="url-input"
-                  name="url"
-                  placeholder="Place your URL here..."
-                  required
-                />
+                <div class="custom-url-container">
+                  <span class="url-prefix">plb.sh/</span>
+                  <input
+                    type="text"
+                    id="url-input"
+                    name="url"
+                    placeholder="custom-part"
+                    class="custom-url-input"
+                  />
+                </div>
               </div>
               <button class="save-btn" id="generate-btn" type="button">
                 Generate Short URL

@@ -243,6 +243,39 @@ body {
   margin-bottom: 15px; /* Menambah jarak antara input */
 }
 
+/* Custom URL Container */
+.custom-url-container {
+  display: flex;
+  align-items: flex-start;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+  background-color: #f9f9f9;
+  height: 41px;
+}
+
+/* URL Prefix */
+.url-prefix {
+  padding: 10px;
+  background-color: #ffffff;
+  color: #666;
+  font-weight: 100;
+}
+
+/* Custom URL Input */
+.custom-url-input {
+  flex: 1;
+  padding: 30px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: #333;
+}
+
+.custom-url-input::placeholder {
+  color: #666;
+}
+
 /* Layout QR Code bagian bawah */
 .qrcode-bottom {
   display: flex;
