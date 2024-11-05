@@ -28,17 +28,13 @@
                 <!-- <a href="#">redirect</a> -->
               </p>
             </div>
-            <button class="save-btn">Save changes</button>
+            <button id="copy-short-url-btn" class="copy-url-btn">
+              Copy Short URL
+            </button>
           </div>
           <div class="right-section">
-            <div class="qr-options">
-              <label>
-                <input type="checkbox" id="enable-qr" checked />
-                Enable QR Code
-              </label>
-            </div>
             <div class="qr-code">
-              <canvas id="qr-code-canvas" width="200" height="200"></canvas>
+              <canvas id="qr-code-canvas" width="150" height="150"></canvas>
             </div>
             <div class="buttons">
               <button id="copy-btn">Copy</button>
@@ -51,61 +47,9 @@
 
     <script src="/assets/js/gengen.js"></script>
     <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
     <script>
       feather.replace(); // Initialize Feather icons
-
-      function goBack() {
-        window.history.back();
-      }
-
-      // Fungsi untuk mengambil ID dari URL
-      function getIdFromUrl() {
-        const params = new URLSearchParams(window.location.search);
-        return params.get("id"); // Mengambil ID dari URL
-      }
-
-      // Fungsi untuk mengambil data shortlink dari backend
-      async function fetchShortlink() {
-        const id = getIdFromUrl();
-        if (!id) {
-          console.error("No ID found in URL"); // Menampilkan pesan jika ID tidak ditemukan
-          return;
-        }
-
-        try {
-          const response = await fetch(
-            `http://localhost:8000/shortlink/get/${id}`
-          );
-          if (!response.ok) {
-            throw new Error("Network response was not ok"); // Menampilkan pesan jika terjadi kesalahan jaringan
-          }
-          const data = await response.json(); // Mengambil data JSON dari response
-          console.log('ok', data);
-          document.getElementById("shortlink-title").textContent = "http://localhost:8000/" + data.short_url; // Menampilkan judul (custom URL)
-          document.getElementById("shortlink-url").textContent = data.long_url; // Menampilkan URL tujuan
-          // Generate QR code if enabled
-          if (document.getElementById("enable-qr").checked) {
-            generateQRCode(data.destination);
-          }
-        } catch (error) {
-          console.error("Error fetching shortlink:", error);
-        }
-      }
-
-      // Generate QR code based on the URL
-      function generateQRCode(url) {
-        const canvas = document.getElementById("qr-code-canvas");
-        const ctx = canvas.getContext("2d");
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        // Assuming you have a QR code generation function (e.g., qrcode.js)
-        QRCode.toCanvas(canvas, url, function (error) {
-          if (error) console.error(error);
-          console.log("QR code generated!");
-        });
-      }
-
-      // Ambil data shortlink saat halaman dimuat
-      window.onload = fetchShortlink; // Memanggil fungsi fetchShortlink saat halaman dimuat
     </script>
   </body>
 </html>

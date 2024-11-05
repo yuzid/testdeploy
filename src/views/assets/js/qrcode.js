@@ -1,4 +1,10 @@
-let currentQRData = null;
+let currentQRCode = {
+  data: null,
+  style: {
+    color: "#000000",
+    logo: null,
+  }
+};
 
 // Function to switch between tabs
 function openTab(evt, tabName) {
@@ -32,7 +38,7 @@ document
       const data = await response.json();
 
       if (data.success) {
-        currentQRData = data;
+        currentQRCode.data = data;
         displayQRResult(data);
         document.getElementById("inputSection").style.display = "none";
         document.getElementById("resultSection").style.display = "block";
@@ -43,43 +49,44 @@ document
     }
   });
 
-let currentQRStyle = {
-  color: "#000000",
-  logo: null,
-};
-
-function displayQRResult(data) {
-  document.getElementById("qrTitle").textContent = "Title: " + data.title;
-  document.getElementById("qrUrl").textContent = "URL: " + data.url;
-
-  const img = document.createElement("img");
-  img.src = data.imageData;
-  img.alt = data.title;
-
-  const container = document.getElementById("qrCodeContainer");
-  container.innerHTML = "";
-  container.appendChild(img);
-}
+  function displayQRResult(data) {
+    document.getElementById("qrTitle").textContent = "Title: " + data.title;
+    document.getElementById("qrUrl").textContent = "URL: " + data.url;
+  
+    const img = document.createElement("img");
+    img.src = data.imageData; // Set QR code image source
+    img.alt = data.title;
+  
+    const container = document.getElementById("qrCodeContainer");
+    container.innerHTML = ""; // Clear previous content
+    container.appendChild(img);
+  
+    // Set logo in currentQRCode.style.logo
+    if (data.logo) {
+      currentQRCode.style.logo = data.logo; // Set the logo Data URI
+    }
+  }
+  
 
 async function updateQRStyle(color = null, element = null, logoInput = null) {
   const formData = new FormData();
-  formData.append("url", currentQRData.url);
-  formData.append("title", currentQRData.title);
+  formData.append("url", currentQRCode.data.url);
+  formData.append("title", currentQRCode.data.title);
 
   if (color) {
-    currentQRStyle.color = color;
+    currentQRCode.style.color = color;
     document
       .querySelectorAll(".color-option")
       .forEach((opt) => opt.classList.remove("selected"));
     if (element) element.classList.add("selected");
   }
-  formData.append("color", currentQRStyle.color);
+  formData.append("color", currentQRCode.style.color);
 
   if (logoInput && logoInput.files[0]) {
-    currentQRStyle.logo = logoInput.files[0];
+    currentQRCode.style.logo = logoInput.files[0];
   }
-  if (currentQRStyle.logo) {
-    formData.append("logo", currentQRStyle.logo);
+  if (currentQRCode.style.logo) {
+    formData.append("logo", currentQRCode.style.logo);
   }
 
   try {
@@ -90,7 +97,7 @@ async function updateQRStyle(color = null, element = null, logoInput = null) {
 
     const data = await response.json();
     if (data.success) {
-      currentQRData = data;
+      currentQRCode.data = data;
       displayQRResult(data);
     }
   } catch (error) {
@@ -100,8 +107,8 @@ async function updateQRStyle(color = null, element = null, logoInput = null) {
 }
 
 function copyQRCode() {
-  if (currentQRData) {
-    fetch(currentQRData.imageData)
+  if (currentQRCode.data) {
+    fetch(currentQRCode.data.imageData)
       .then((res) => res.blob())
       .then((blob) => {
         const item = new ClipboardItem({ "image/png": blob });
@@ -114,10 +121,10 @@ function copyQRCode() {
 }
 
 function downloadQRCode() {
-  if (currentQRData) {
+  if (currentQRCode.data) {
     const a = document.createElement("a");
-    a.href = currentQRData.imageData;
-    a.download = `qr-code-${currentQRData.title}.png`;
+    a.href = currentQRCode.data.imageData;
+    a.download = `qr-code-${currentQRCode.data.title}.png`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -125,9 +132,15 @@ function downloadQRCode() {
 }
 
 async function saveQRCode() {
-  if (currentQRData) {
-    const imageData = currentQRData.imageData; // Make sure currentQRData is defined somewhere
-    const date = new Date().toISOString();
+  if (currentQRCode.data) {
+    
+    const payload = {
+      imageData: currentQRCode.style.logo,
+      date: new Date().toISOString(),
+      color: currentQRCode.style.color,
+      url: currentQRCode.data.url,
+      title: currentQRCode.data.title
+    };
     
     try {
       const response = await fetch('/qr/saveqr', {
@@ -135,12 +148,11 @@ async function saveQRCode() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ imageData, date })
+        body: JSON.stringify(payload)
       });
 
       if (response.ok) {
         alert("QR berhasil disimpan ke database");
-        // Reset form and UI only after successful save
         document.getElementById("qrForm").reset();
         document.getElementById("inputSection").style.display = "block";
         document.getElementById("resultSection").style.display = "none";
@@ -160,20 +172,16 @@ function editHistoryQR(button) {
   const title = historyItem.querySelector(".title").textContent;
   const url = historyItem.querySelector(".url").textContent;
 
-  // Switch to Create tab
   document.getElementById("defaultOpen").click();
 
-  // Fill form with history item data
   document.getElementById("url").value = url;
   document.getElementById("title").value = title;
 
-  // Submit form to regenerate QR
   document.getElementById("qrForm").dispatchEvent(new Event("submit"));
 }
 
 function copyHistoryQR(button) {
   const historyItem = button.closest(".history-item");
-  // Implementation depends on how you store the QR image data
   alert("QR Code copied to clipboard!");
 }
 
@@ -181,13 +189,12 @@ function deleteHistoryQR(button) {
   const historyItem = button.closest(".history-item");
   if (confirm("Are you sure you want to delete this QR code?")) {
     historyItem.remove();
-    // Also remove from storage
   }
 }
 
 async function displayQRCode1() {
   try {
-    const response = await fetch('/qr/pick', {  // Adjust the endpoint as needed
+    const response = await fetch('/qr/pick', {
       method: 'GET'
     });
 
@@ -196,13 +203,11 @@ async function displayQRCode1() {
     if (data.success) {
       console.log('QR code retrieved successfully');
       
-      // Assuming the image is stored as base64
       const qrImage = document.createElement('img');
-      qrImage.src = data.imageData;  // If it's base64, it should already include the data:image/... prefix
+      qrImage.src = data.imageData;
       
-      // Display the image in a container
       const container = document.getElementById('qrDisplayContainer');
-      container.innerHTML = '';  // Clear previous content
+      container.innerHTML = '';
       container.appendChild(qrImage);
     } else {
       console.error('Failed to retrieve QR code:', data.error);
@@ -212,5 +217,13 @@ async function displayQRCode1() {
   }
 }
 
-// Initialize
 document.getElementById("defaultOpen").click();
+
+function convertFileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}

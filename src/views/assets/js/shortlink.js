@@ -134,3 +134,50 @@ function generateQRCodeFromUrl(url) {
     "&size=300x300"
   );
 }
+
+let currentShortlink = "plb.sh/AbC123"; // Variabel untuk menyimpan shortlink yang akan disalin
+
+function copyShortlink() {
+  if (currentShortlink) {
+    // Menggunakan Clipboard API untuk menyalin shortlink ke clipboard
+    navigator.clipboard
+      .writeText(currentShortlink)
+      .then(() => alert("Shortlink copied to clipboard!"))
+      .catch(() => alert("Failed to copy Shortlink"));
+  } else {
+    alert("No shortlink available to copy.");
+  }
+}
+
+function shareShortlink() {
+  if (!currentShortlink) {
+    alert("No shortlink available to share.");
+    return;
+  }
+
+  // Cek apakah Web Share API tersedia di browser
+  if (navigator.share) {
+    navigator.share({
+      title: "Check out this link!",
+      text: "Here's a shortlink you might find interesting:",
+      url: currentShortlink,
+    })
+      .then(() => console.log("Shortlink shared successfully"))
+      .catch((error) => console.error("Failed to share shortlink:", error));
+  } else {
+    // Jika Web Share API tidak tersedia, gunakan cara alternatif
+    alert("Web Share API not supported. Try copying the link instead.");
+  }
+}
+
+// Fungsi untuk menetapkan shortlink yang baru dihasilkan
+function setShortlink(shortlink) {
+  currentShortlink = shortlink; // Set currentShortlink saat shortlink baru dibuat
+}
+
+function deleteShortlink(button) {
+  const historyItem = button.closest(".history-item");
+  if (confirm("Are you sure you want to delete this QR code?")) {
+    historyItem.remove();
+  }
+}

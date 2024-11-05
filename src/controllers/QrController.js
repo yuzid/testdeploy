@@ -23,15 +23,21 @@ const generateQRCode = async (req, res) => {
 
     let finalImage = sharp(qrCodeBuffer).resize(300, 300);
 
+    let logoDataURI = null;
+
     // If logo is provided, overlay it on the QR code
     if (logo) {
       const logoBuffer = await sharp(logo.buffer)
         .resize(50, 50)
         .toBuffer();
-
+      
       finalImage = finalImage.composite([
         { input: logoBuffer, gravity: 'center' }
       ]);
+
+      // Convert logoBuffer to Base64 Data URI
+      const base64Logo = logoBuffer.toString('base64');
+      logoDataURI = `data:image/png;base64,${base64Logo}`; // Create Data URI for logo
     }
 
     const outputBuffer = await finalImage.png().toBuffer();
@@ -44,7 +50,8 @@ const generateQRCode = async (req, res) => {
       success: true,
       imageData: dataURI,
       title: title,
-      url: url
+      url: url,
+      logo: logoDataURI // Include logo Data URI in the response
     });
 
   } catch (error) {
@@ -59,9 +66,9 @@ const qrmain = async(req,res) =>{
 
 const saveQR = async (req, res) => {
   try {
-    const id_qr = '123a'; // Replace with dynamic ID generation if needed
-    const email = 'yazid.fauzan.tif23@polban.ac.id'; // Replace with session email data if applicable
-    const { imageData, date } = req.body;
+    const id_qr = '123a'; 
+    const email = 'yazid.fauzan.tif23@polban.ac.id'; 
+    const { imageData, date, color, url, title} = req.body;
 
     // Check if imageData is a base64 string, if so, remove prefix and convert to Buffer
     let imageBuffer;
@@ -73,7 +80,7 @@ const saveQR = async (req, res) => {
     }
 
     // Save binary imageBuffer
-    await Qr.insert(id_qr, imageBuffer, date, email);
+    await Qr.insert(id_qr, imageBuffer, date, email, color,url,title);
     res.status(200).json({ message: 'QR code saved successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Failed to save QR code' });
