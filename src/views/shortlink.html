@@ -97,7 +97,7 @@
                 />
               </div>
               <div class="input-group">
-                <label for="url-input">Custom URL (optional)</label>
+                <label for="url-input">Custom URL</label>
                 <div class="custom-url-container">
                   <span class="url-prefix">plb.sh/</span>
                   <input
@@ -136,15 +136,53 @@
               <p><i data-feather="calendar"></i> 14 July 2024</p>
             </div>
             <div class="actions">
-              <button id="copy-shortlink-btn" onclick="copyShortlink()"><i data-feather="copy"></i> Copy</button>
-              <button id="share-shortlink-btn" onclick="shareShortlink()"><i data-feather="share-2"></i> Share</button>
-              <button><i data-feather="edit"></i> Edit</button>
-              <button id="delete-shortlink-btn" onclick="deleteShortlink(this)"><i data-feather="trash-2"></i> Delete</button>
+              <button id="copy-shortlink-btn" onclick="copyShortlink()">
+                <i data-feather="copy"></i> Copy
+              </button>
+              <button id="share-shortlink-btn" onclick="shareShortlink()">
+                <i data-feather="share-2"></i> Share
+              </button>
+              <button
+                id="edit-shortlink-btn"
+                onclick="openEditModal('plb.sh/AbC123')"
+              >
+                <i data-feather="edit"></i> Edit
+              </button>
+              <button id="delete-shortlink-btn" onclick="deleteShortlink(this)">
+                <i data-feather="trash-2"></i> Delete
+              </button>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+
+       <!-- Modal Edit Form -->
+        <div id="editModal" class="modal">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3>Edit Short URL</h3>
+              <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+              <form id="editForm">
+                <div class="form-group">
+                  <label for="oldUrl">Current Short URL:</label>
+                  <input type="text" id="oldUrl" disabled />
+                </div>
+                <div class="form-group">
+                  <label for="newUrl">New Custom URL:</label>
+                  <div class="custom-url-container">
+                    <span class="url-prefix">plb.sh/</span>
+                    <input type="text" id="newUrl" placeholder="Enter new custom URL" />
+                  </div>
+                </div>
+                <div class="form-buttons">
+                  <button type="button" class="save-btn" id="saveEdit">Save Changes</button>
+                  <button type="button" class="cancel-btn" id="cancelEdit">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
     <!-- Content End -->
 
     <!-- JavaScript -->

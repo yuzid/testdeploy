@@ -157,11 +157,12 @@ function shareShortlink() {
 
   // Cek apakah Web Share API tersedia di browser
   if (navigator.share) {
-    navigator.share({
-      title: "Check out this link!",
-      text: "Here's a shortlink you might find interesting:",
-      url: currentShortlink,
-    })
+    navigator
+      .share({
+        title: "Check out this link!",
+        text: "Here's a shortlink you might find interesting:",
+        url: currentShortlink,
+      })
       .then(() => console.log("Shortlink shared successfully"))
       .catch((error) => console.error("Failed to share shortlink:", error));
   } else {
@@ -177,7 +178,77 @@ function setShortlink(shortlink) {
 
 function deleteShortlink(button) {
   const historyItem = button.closest(".history-item");
-  if (confirm("Are you sure you want to delete this QR code?")) {
+  if (confirm("Are you sure you want to delete this link?")) {
     historyItem.remove();
   }
 }
+
+// Get modal elements
+const modal = document.getElementById("editModal");
+const closeBtn = document.querySelector(".close");
+const saveBtn = document.getElementById("saveEdit");
+const cancelBtn = document.getElementById("cancelEdit");
+let currentEditingItem = null;
+
+// Function to open modal
+function openEditModal(element) {
+  const historyItem = element.closest(".history-item");
+  const currentUrl = historyItem.querySelector(".link-details a").textContent;
+
+  // Store reference to currently editing item
+  currentEditingItem = historyItem;
+
+  // Set current URL in form
+  document.getElementById("oldUrl").value = currentUrl;
+  document.getElementById("newUrl").value = currentUrl.replace("plb.sh/", "");
+
+  // Show modal
+  modal.style.display = "block";
+}
+
+// Function to close modal
+function closeModal() {
+  modal.style.display = "none";
+  // Clear form
+  document.getElementById("editForm").reset();
+  currentEditingItem = null;
+}
+
+// Function to save changes
+function saveChanges() {
+  const newUrl = document.getElementById("newUrl").value;
+
+  if (newUrl.trim() === "") {
+    alert("Please enter a new URL");
+    return;
+  }
+
+  // Update URL in history item
+  if (currentEditingItem) {
+    const linkElement = currentEditingItem.querySelector(".link-details a");
+    linkElement.textContent = "plb.sh/" + newUrl;
+    linkElement.href = "plb.sh/" + newUrl;
+  }
+
+  // Close modal after saving
+  closeModal();
+}
+
+// Event listeners
+closeBtn.onclick = closeModal;
+cancelBtn.onclick = closeModal;
+saveBtn.onclick = saveChanges;
+
+// Close modal if clicked outside
+window.onclick = function (event) {
+  if (event.target === modal) {
+    closeModal();
+  }
+};
+
+// Modify existing edit button click handler
+document.querySelectorAll("#edit-shortlink-btn").forEach((btn) => {
+  btn.onclick = function () {
+    openEditModal(this);
+  };
+});
