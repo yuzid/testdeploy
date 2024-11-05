@@ -5,8 +5,10 @@ import linktreeController from "../controllers/linktreeController.js"
 routerLinktree.route('/')
     .get(linktreeController.linktreeMenu);
 
-routerLinktree.route('/config')
-    .post(linktreeController.createLinktree);
+routerLinktree.route('/create-room')
+    .post(linktreeController.createRoom);
+
+
 
 routerLinktree.route('/res')
     .get(linktreeController.linktreeRes);

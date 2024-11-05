@@ -47,21 +47,43 @@ const sendLinktreeData = async (req,res) => {
     }
 }
 
-const createLinktree = async (req, res) => {
+const createRoom = async (req, res) => {
     try{
         const { body } = req;
+        let custom;
         const id = await uniqueRandomID();
-        const shortUrl = await shorten(`http://localhost:8000/linktree/res?id=${id}`, null);
-        console.log(shortUrl);
-        await Linktree.insert(id, body.title, shortUrl, null, body.style);
-        await insertButtons(id, body.btnArray);
-        res.status(303).redirect(`http://localhost:8000/linktree/res?id=${id}`);
+        if (body.customUrl.length > 0){
+            custom = body.customUrl;
+        }
+        else{
+            custom = id;
+        }
+        const shortUrl = await shorten(`http://localhost:8000/linktree/res?id=${id}`, null, custom);
+        await Linktree.insert(id, body.title, custom, null, body.style);
+        res.status(303).redirect(`http://localhost:8000/linktree/room-edit?id=${id}`);
     }
     catch (e){
         console.log(e.message);
         res.status(500).send(e.message);
     }
 }
+
+const saveButtons = async (req, res) => {
+    try{
+        const { body } = req;
+        const id = req.params.id;
+        await insertButtons(id, body);
+        res.status(200).send("success");
+    }
+    catch (e){
+        console.log(e.message);
+        res.status(500).send(e.message);
+    }
+}
+
+async function jsonfyButtons(id){
+
+};
 
 const linktreeRes = async (req, res) => {
     try{
@@ -101,7 +123,7 @@ const getLinktree = async (req, res) => {
 export default {
     linktreeMenu,
     sendLinktreeData,
-    createLinktree,
+    createRoom,
     linktreeRes,
     getLinktree
 }
