@@ -8,6 +8,7 @@ import path from 'path';
 import { __dirname } from "./path.js";
 import { checkAuth } from "./src/middleware/checkAuth.js";
 import routerLinktree from "./src/routes/linktree.js";
+import { loginSession } from "./src/middleware/loginSessionMid.js";
 
 const PORT = 8000;
 const app = express();
