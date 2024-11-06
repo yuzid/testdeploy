@@ -51,7 +51,9 @@
           </div>
           <button type="submit" class="sign-button">Log In</button>
           <div class="sign-account-text">
-            <p>Don't have an account? <a href="/account/aktivasi">Aktivasi</a></p>
+            <p>
+              Don't have an account? <a href="/account/aktivasi">Aktivasi</a>
+            </p>
           </div>
         </form>
       </div>
@@ -88,42 +90,44 @@
       togglePasswordVisibility("toggle-password", "password");
 
       // Handle form submission
-      document.getElementById("loginForm").addEventListener("submit", async function (event) {
-        event.preventDefault(); // Prevent the default form submission
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault(); // Prevent the default form submission
 
-        // Gather input values
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
+          // Gather input values
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
 
-        // Create JSON object
-        const data = {
-          email: email,
-          password: password,
-        };
+          // Create JSON object
+          const data = {
+            email: email,
+            password: password,
+          };
 
-        try {
-          // Send POST request with JSON body
-          const response = await fetch("/account/linlogic", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          });
+          try {
+            // Send POST request with JSON body
+            const response = await fetch("/account/linlogic", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            });
 
-          // Check if response is OK (status 200-299)
-          if (response.redirected) {
-            // If redirected, navigate to the new location
-            window.location.href = response.url;
-          } else {
-            const error = await response.json();
-            alert(error.msg); // Show error message
+            // Check if response is OK (status 200-299)
+            if (response.redirected) {
+              // If redirected, navigate to the new location
+              window.location.href = response.url;
+            } else {
+              const error = await response.json();
+              alert(error.msg); // Show error message
+            }
+          } catch (err) {
+            console.error(err);
+            alert("Terjadi kesalahan saat menghubungi server");
           }
-        } catch (err) {
-          console.error(err);
-          alert('Terjadi kesalahan saat menghubungi server');
-        }
-      });
+        });
     </script>
   </body>
 </html>
