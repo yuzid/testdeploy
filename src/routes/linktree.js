@@ -4,10 +4,14 @@ import linktreeController from "../controllers/linktreeController.js";
 
 routerLinktree.route("/").get(linktreeController.linktreeMenu);
 
-routerLinktree.route("/config").post(linktreeController.createLinktree);
+routerLinktree.route("/config").post(linktreeController.createRoom);
 
-routerLinktree.route("/res").get(linktreeController.linktreeRes);
+routerLinktree.route("/room").get(linktreeController.linktreeRoom);
+
+routerLinktree.route("/room-edit").get(linktreeController.linktreeRoomEdit);
 
 routerLinktree.route("/get/:id").get(linktreeController.getLinktree);
+
+routerLinktree.route("/save").patch(linktreeController.saveContent)
 
 export default routerLinktree;

@@ -67,7 +67,7 @@ const qrmain = async(req,res) =>{
 const saveQR = async (req, res) => {
   try {
     const id_qr = '123a'; 
-    const email = 'yazid.fauzan.tif23@polban.ac.id'; 
+    const email = 'muhammad.reivan.tif23@polban.ac.id'; 
     const { imageData, date, color, url, title} = req.body;
 
     // Check if imageData is a base64 string, if so, remove prefix and convert to Buffer
@@ -83,6 +83,7 @@ const saveQR = async (req, res) => {
     await Qr.insert(id_qr, imageBuffer, date, email, color,url,title);
     res.status(200).json({ message: 'QR code saved successfully' });
   } catch (error) {
+    console.log(error.message)
     res.status(500).json({ error: 'Failed to save QR code' });
   }
 };

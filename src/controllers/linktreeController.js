@@ -4,6 +4,7 @@ import cryptoRandomString from "crypto-random-string";
 import { __dirname } from "../../path.js";
 import path from "path";
 import { shorten } from "./shortlinkController.js";
+import LtHistory from "../models/linktreeHistoryModel.js";
 
 async function isIDunique(id) {
   const result = await Linktree.exists("id_linktree", id);
@@ -57,8 +58,8 @@ const createRoom = async (req, res) => {
         else{
             custom = id;
         }
-        const shortUrl = await shorten(`http://localhost:8000/linktree/res?id=${id}`, null, custom);
-        await Linktree.insert(id, body.title, custom, null, body.style);
+        const shortUrl = await shorten(`http://localhost:8000/linktree/room?id=${id}`, null, custom);
+        await Linktree.insert(id, null, custom, null, null);
         res.status(303).redirect(`http://localhost:8000/linktree/room-edit?id=${id}`);
     }
     catch (e){
@@ -67,11 +68,20 @@ const createRoom = async (req, res) => {
     }
 }
 
-const saveButtons = async (req, res) => {
+const saveContent = async (req, res) => {
     try{
         const { body } = req;
-        const id = req.params.id;
-        await insertButtons(id, body);
+        const id = req.query.id; 
+        const buttonData = await Button.getBy("id_linktree", id);
+        if (buttonData.rowCount > 0){
+            const linktreeData = await Linktree.getBy("id_linktree", id);
+            await LtHistory.insert(id, linktreeData.rows[0]["time_linktree_created"], linktreeData.rows[0]["style"], JSON.stringify(buttonData.rows), linktreeData.rows[0]["linktree_title"], linktreeData.rows[0]["bio"]);  
+            await Button.delete("id_linktree",id);
+            Linktree.update("time_linktree_created", "now()::timestamp", "id_linktree", id);
+        }
+        console.log(id)
+        await Linktree.patch(body.title, body.bio, body.style, id);
+        await insertButtons(id, body.btnArray);
         res.status(200).send("success");
     }
     catch (e){
@@ -79,21 +89,6 @@ const saveButtons = async (req, res) => {
         res.status(500).send(e.message);
     }
 }
-
-async function jsonfyButtons(id){
-
-};
-
-const linktreeRes = async (req, res) => {
-  try {
-    res
-      .status(200)
-      .sendFile(path.join(__dirname, "src", "views", "buildlinktree.html"));
-  } catch (e) {
-    console.log(e.message);
-    res.status(500).send(e.message);
-  }
-};
 
 async function insertButtons(id, buttonData, email = null) {
   buttonData.forEach(async (button, index) => {
@@ -119,10 +114,34 @@ const getLinktree = async (req, res) => {
   }
 };
 
+const linktreeRoom = async (req, res) => {
+  try {
+    res
+      .status(200)
+      .sendFile(path.join(__dirname, "src", "views", "linktreeRoom.html"));
+  } catch (e) {
+    console.log(e.message);
+    res.status(500).send(e.message);
+  }
+};
+
+const linktreeRoomEdit = async (req, res) => {
+  try {
+    res
+      .status(200)
+      .sendFile(path.join(__dirname, "src", "views", "linktreeRoomEdit.html"));
+  } catch (e) {
+    console.log(e.message);
+    res.status(500).send(e.message);
+  }
+};
+
 export default {
     linktreeMenu,
     sendLinktreeData,
     createRoom,
-    linktreeRes,
-    getLinktree
+    getLinktree,
+    saveContent,
+    linktreeRoom,
+    linktreeRoomEdit
 }

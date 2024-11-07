@@ -16,9 +16,13 @@ Linktree.insert = async (id, title, url, email=null, style) => {
     return await pool.query(`INSERT INTO linktrees VALUES ($1, $2, $3, now()::timestamp, $4, $5)` ,[id,title,url,email,style]);
 }
 
+Linktree.patch = async (title, bio, style, id) => {
+    return await pool.query(`UPDATE linktrees SET linktree_title = $1, bio = $2, style = $3 WHERE id_linktree = $4`, [title, bio, style, id]);
+}
+
 Linktree.update = async (field, value, fieldCriteria, valueCriteria) => {
-    const sql = format(`UPDATE linktrees SET %I = $1 WHERE %I = $2`, field, fieldCriteria);
-    return await pool.query(sql, [value, valueCriteria]);
+    const sql = format(`UPDATE linktrees SET %I = ${value} WHERE %I = $1`, field, fieldCriteria);
+    return await pool.query(sql, [valueCriteria]);
 }
 
 Linktree.delete = async (field, value) => {
