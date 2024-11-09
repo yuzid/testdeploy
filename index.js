@@ -10,7 +10,7 @@ import { checkAuth } from "./src/middleware/checkAuth.js";
 import routerLinktree from "./src/routes/linktree.js";
 import { loginSession } from "./src/middleware/loginSessionMid.js";
 
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 const app = express();
 
 app.use(session({
