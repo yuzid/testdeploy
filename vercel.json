@@ -12,9 +12,24 @@
         "dest": "/src/views/assets/$1"
       },
       {
+        "src": "/account/(.*)",
+        "dest": "index.js"
+      },
+      {
+        "src": "/shortlink/(.*)",
+        "dest": "index.js"
+      },
+      {
+        "src": "/qr/(.*)",
+        "dest": "index.js"
+      },
+      {
+        "src": "/linktree/(.*)",
+        "dest": "index.js"
+      },
+      {
         "src": "/(.*)",
         "dest": "index.js"
       }
     ]
   }
-  
