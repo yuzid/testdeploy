@@ -14,12 +14,36 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT || 8000;
 
-// Enable trust proxy for Vercel
-app.set('trust proxy', 1);
+// Enable detailed error logging
+const errorHandler = (err, req, res, next) => {
+    console.error('Error details:', {
+        message: err.message,
+        stack: err.stack,
+        path: req.path,
+        method: req.method,
+        body: req.body,
+        query: req.query
+    });
+    
+    res.status(500).json({
+        error: err.message || 'Something went wrong!',
+        path: req.path,
+        timestamp: new Date().toISOString()
+    });
+};
 
-// Session configuration
+// Middleware to log all requests
+app.use((req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+    next();
+});
+
+// Basic middleware setup
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Session configuration for Vercel
 app.use(session({
     secret: process.env.SESSION_SECRET || 'my-secret-key',
     resave: false,
@@ -27,49 +51,91 @@ app.use(session({
     cookie: { 
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
-        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+        maxAge: 24 * 60 * 60 * 1000 
     }
 }));
 
-// Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Static files
-app.use('/assets', express.static(path.join(__dirname, 'src', 'views', 'assets')));
-
-// Routes
-app.use('/shortlink', routerShortlink);
-app.use('/account', routerAccount);
-app.use('/qr', routerQr);
-app.use('/linktree', routerLinktree);
-
-// Health check endpoint
-app.get('/api/healthcheck', (req, res) => {
-    res.status(200).json({ status: 'ok' });
+// Test route to verify basic functionality
+app.get('/api/test', (req, res) => {
+    res.json({ status: 'ok', message: 'Test endpoint working' });
 });
 
-// Root route
-app.get('/', checkAuth, (req, res) => {
-    res.sendFile(path.join(__dirname, 'src', 'views', 'index.html'));
+// Static files with error handling
+app.use('/assets', (req, res, next) => {
+    express.static(path.join(__dirname, 'src', 'views', 'assets'))(req, res, err => {
+        if (err) {
+            console.error('Static file error:', err);
+            next(err);
+        }
+    });
 });
 
-// Shortlink redirect
-app.get('/:id', shortlinkController.firstRedirect);
-
-// Error handling
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ error: 'Something went wrong!' });
+// Routes with try-catch
+app.use('/shortlink', (req, res, next) => {
+    try {
+        routerShortlink(req, res, next);
+    } catch (err) {
+        next(err);
+    }
 });
 
-// 404 handler
-app.use((req, res) => {
-    res.status(404).json({ error: 'Route not found' });
+app.use('/account', (req, res, next) => {
+    try {
+        routerAccount(req, res, next);
+    } catch (err) {
+        next(err);
+    }
 });
 
-// Only listen if not running on Vercel
+app.use('/qr', (req, res, next) => {
+    try {
+        routerQr(req, res, next);
+    } catch (err) {
+        next(err);
+    }
+});
+
+app.use('/linktree', (req, res, next) => {
+    try {
+        routerLinktree(req, res, next);
+    } catch (err) {
+        next(err);
+    }
+});
+
+// Root route with error handling
+app.get('/', async (req, res, next) => {
+    try {
+        if (typeof checkAuth !== 'function') {
+            throw new Error('checkAuth middleware is not a function');
+        }
+        await new Promise((resolve, reject) => {
+            checkAuth(req, res, (err) => {
+                if (err) reject(err);
+                else resolve();
+            });
+        });
+        res.sendFile(path.join(__dirname, 'src', 'views', 'index.html'));
+    } catch (err) {
+        next(err);
+    }
+});
+
+// Shortlink redirect with error handling
+app.get('/:id', async (req, res, next) => {
+    try {
+        await shortlinkController.firstRedirect(req, res, next);
+    } catch (err) {
+        next(err);
+    }
+});
+
+// Error handler middleware should be last
+app.use(errorHandler);
+
+// Only start server if not in production
 if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 8000;
     app.listen(PORT, () => {
         console.log(`Server running at port ${PORT}`);
     });

@@ -15,31 +15,15 @@
         }
       },
       {
-        "handle": "filesystem"
-      },
-      {
-        "src": "/",
-        "dest": "index.js"
-      },
-      {
-        "src": "/account.*",
-        "dest": "index.js"
-      },
-      {
-        "src": "/shortlink.*",
-        "dest": "index.js"
-      },
-      {
-        "src": "/qr.*",
-        "dest": "index.js"
-      },
-      {
-        "src": "/linktree.*",
+        "src": "/api/test",
         "dest": "index.js"
       },
       {
         "src": "/(.*)",
         "dest": "index.js"
       }
-    ]
+    ],
+    "env": {
+      "NODE_ENV": "production"
+    }
   }
